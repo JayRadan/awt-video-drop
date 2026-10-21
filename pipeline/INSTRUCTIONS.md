@@ -1,30 +1,47 @@
-# How Claude runs the Anonymous Wolf Trader video pipeline (any new session)
+---
+name: awt-gold-video
+description: Turn the user's gold / XAUUSD market analysis into a finished "Anonymous Wolf Trader" YouTube video (cleaned script in the user's own words, AI narration, real gold candlestick chart in a quant-terminal look, music and sound design, thumbnail) and publish it to YouTube via Metricool. Use this skill whenever the user pastes a gold/XAUUSD analysis, says "new video", "make the video", "gold update", "post this", "today's analysis", or mentions the Anonymous Wolf Trader channel, even if they do not say "skill" or explain the workflow.
+---
 
-User: Jacob. Channel: Anonymous Wolf Trader (@awtforex), id UCcXNpTCVOSpJMSb0PJF0Ksg.
-Input: the user pastes a gold/XAUUSD analysis. Output: finished video posted to YouTube.
+# Anonymous Wolf Trader — gold video pipeline
 
-HARD RULES
-- Script = the user's analysis. Clean sentences, add a short intro/transitions/recap only. Never add, remove or change any claim, level, target or view. Never invent targets or invalidation levels.
-- Spoken + on-screen: "This is my own analysis and not financial advice."
-- YouTube: isAiGeneratedContent true. Description notes visuals/voice are AI-made, analysis is the user's.
-- Minimise vidIQ credits: script written by Claude (free); vidIQ only for voice (14 cr/1000 chars) and thumbnail (22 cr). Check vidiq_balance first and tell the user the cost.
+The user (Jacob) runs the YouTube channel **Anonymous Wolf Trader** (@awtforex, channel id `UCcXNpTCVOSpJMSb0PJF0Ksg`). He pastes a gold analysis; you produce and publish the video without asking questions unless something blocks you. Give short progress lines, deliver the MP4 with `SendUserFile`, and end with the YouTube link.
 
-SETUP ALREADY IN PLACE
-- vidIQ connector (jacob.radan2@gmail.com), channel authorized.
-- Metricool connector: brand blogId 7357453, YouTube connected, timezone Europe/Berlin.
-- This repo (public) = scripts in pipeline/, temporary drop box in videos/.
-- Allowed download domains: ai-voiceovers.s3.us-east-1.amazonaws.com, remotionlambda-useast1-2ei5ch6f3q.s3.us-east-1.amazonaws.com, datafeed.dukascopy.com, stooq.com, query1/query2.finance.yahoo.com.
+## Hard rules
+- The script is the user's analysis. Clean sentences and add a short intro, transitions and a recap only. **Never add, remove or change any claim, level, target or view. Never invent targets, invalidation levels or prices.** If the user mentions a futures level, ask once for the spot-equivalent price if he hasn't given it (he usually says e.g. "4,150 futures ≈ 4,132 spot"); mention both in the voice and on the chart.
+- Spoken and on-screen: "This is my own analysis and not financial advice."
+- YouTube: `isAiGeneratedContent: true`; description says visuals/voice are AI-made and the analysis is the user's.
+- Voice: **Brian** (`nPczCjzI2devNBz1zQrb`). The user has a cloned voice "Wolf Trader" but does NOT want it used unless he asks.
+- Chart data: **real candles** from Coinbase (PAXG-USD, tokenized gold ≈ spot XAUUSD). Label it as spot-equivalent gold. Only fall back to the illustrative chart if the fetch fails, and then say so in the description.
+- Credits: you write the script (free). vidIQ is used for voice (14 credits / 1000 chars) and thumbnail (22). Check `vidiq_balance` once and state the cost.
+- Default privacy: **public** unless told otherwise.
 
-STEPS
-1. add_repo JayRadan/awt-video-drop (push), clone to /home/claude/awt-video-drop, copy pipeline/*.py to /home/claude/gold.
-2. script.txt: "Anonymous Wolf Trader. Gold update, <date>." + numbered signals + disclaimer close. 300-500 words, <5000 chars.
-3. Voice: vidiq_voiceover_list_voices -> user's custom voice if isCustom else Brian nPczCjzI2devNBz1zQrb. vidiq_voiceover_generate, poll, curl MP3 -> voice.mp3.
-4. ffmpeg -i voice.mp3 -af silencedetect=noise=-32dB:d=0.3 -f null - -> silences.txt (lines "start X"/"end X"); python3 timing.py script.txt silences.txt <voice_sec> 1.0 -> timing.json.
-5. Candles: python3 -I fetch_duka.py 21 candles.json (Dukascopy rate-limits: few, slow requests; if it fails the engine uses illustrative candles and the description must say so). LEVEL=<key level from analysis>.
-6. Edit scene headlines/side-panel text in engine.py to match the new analysis (scenes map to script paragraphs in order). Render: LEVEL=.. python3 engine.py timing.json partA.mp4 0 <mid> and partB.mp4 <mid> <end> in parallel (end = last scene end + 2.5); ffmpeg concat; mux voice with -filter_complex "[1:a]adelay=1000|1000,apad[a]" -shortest. Spot-check frames with Read.
-7. Title/description/chapters/hashtags written by Claude.
-8. Thumbnail: vidiq_generate_thumbnail with referenceImages = channel's last two thumbnails (vidiq_user_videos). Style: dark trading desk, faceless mannequin presenter, gold chart, 2-3 word gold headline + red subline.
-9. Publish: copy MP4 to videos/, commit+push, verify raw.githubusercontent.com URL returns 200, Metricool createScheduledPost (blogId 7357453, youtube, EDUCATION, madeForKids false, isAiGeneratedContent true, privacy public unless user says otherwise, publicationDate ~10 min ahead Europe/Berlin). Once Metricool returns a static.metricool.com media URL, git rm the MP4 and push.
-10. send_later ~15 min, then vidiq_update_video_thumbnail with the thumbnail URL. If verification_required: ask user to verify YouTube in vidIQ, then retry.
+## Already set up — do not re-ask
+- vidIQ connector (jacob.radan2@gmail.com), channel authorized, Boost plan (2,000 credits/month, renews on the 21st).
+- Metricool connector: brand `blogId 7357453`, YouTube connected, timezone Europe/Berlin.
+- GitHub repo `JayRadan/awt-video-drop` (public): `pipeline/` mirrors this skill's scripts, `assets/music.mp3` is the channel music bed (also bundled in this skill under `assets/`), `videos/` is a temporary drop box Metricool fetches from.
+- Allowed download domains: `api.exchange.coinbase.com`, `ai-voiceovers.s3.us-east-1.amazonaws.com`, `ai-music-tracks.s3.us-east-1.amazonaws.com`, `datafeed.dukascopy.com` (throttles hard — fallback only), `raw.githubusercontent.com` via git. Yahoo, Stooq, Binance, Twelve Data are NOT usable from here — do not retry them. `ai-thumbnails.s3.amazonaws.com` is not downloadable; pass thumbnail URLs straight to vidIQ.
+- Workspace tools: ffmpeg, Python 3 with numpy, Pillow, cv2; Inter fonts at /usr/share/fonts/opentype/inter/.
 
-STYLE: dark navy/black, gold #F2C14E, red #FF4D4D, green #2EE6A6; quant-terminal HUD; candlestick chart with key level as red dashed line labelled by role; side panels (positioning, gamma profile, macro regime); typewriter captions synced to voice; ticker; geometric wolf emblem intro/outro.
+## Steps
+1. **Workspace**: `mkdir -p /home/claude/gold`; copy this skill's `scripts/*.py` and `assets/music.mp3` there. `mcp__claude-code-remote__add_repo` owner `JayRadan` repo `awt-video-drop` access `push`; `git clone --depth 1 https://github.com/JayRadan/awt-video-drop /home/claude/awt-video-drop`.
+2. **Data**: `python3 -I fetch_coinbase.py 400 candles.json` (two requests, ~5 s). Note last close, 2-week high/low. Set `LEVEL=<spot-equivalent key level>` for the engine.
+3. **Script** → `script.txt`, exactly **10 paragraphs** (engine maps paragraph → scene in order): (0) "Anonymous Wolf Trader. Gold update, <Month day>." (1) context/range (2) signal 1 (3) signal 2 + key level, futures and spot (4) signal 2 mechanics (5) price action / what price is actually doing (6) signal 3 / regime (7) "put it together" numbered recap (8) the view and level (9) outro: "I'll keep updating this as it develops. This is my own analysis and not financial advice. Trade your own plan, manage your risk, and I'll see you in the next one." 300–500 words, < 5000 chars. Merge/split the user's points to fit 10 paragraphs while keeping every claim.
+4. **Voice**: `vidiq_voiceover_generate` (script, voiceId Brian) → poll `vidiq_job_poll` → `curl -o voice.mp3 "<audioUrl>"`; keep `durationSeconds`.
+5. **Timing**: `ffmpeg -hide_banner -i voice.mp3 -af "silencedetect=noise=-32dB:d=0.3" -f null - 2>&1 | grep -E "silence_(start|end)" | sed -E 's/.*silence_(start|end): ([0-9.]+).*/\1 \2/' > silences.txt` then `python3 timing.py script.txt silences.txt <durationSeconds> 1.0` → `timing.json`.
+6. **Adapt visuals** in `engine.py` to the new analysis: scene headlines, side-panel labels/rows (positioning panel, gamma panel, macro tiles, summary rows), the level label (env `LEVEL_LABEL`, e.g. `"4,150 FUT ≈ 4,132 SPOT · DEALER GAMMA · PUT WALL"`), the hero numbers in scenes 8/intro/outro, and the "my view" text. If the view is bullish, swap the down arrows/`RED` verdicts for up arrows/`GREEN` in scenes 2, 6, 7, 8 (`breakdown` arrow direction: negate the y offset). Render 4 preview frames (`Image.fromarray(render(t))`) and `Read` them before the full render.
+7. **Render** (two halves in parallel, ~13 min): `LEVEL=.. python3 engine.py timing.json partA.mp4 0 <mid>` and `partB.mp4 <mid> <end>` with end = last scene end + 2.5; wait with a background `until grep -q "^done" A.log && grep -q "^done" B.log` loop; `ffmpeg -f concat -safe 0 -i list.txt -c copy video_silent.mp4`.
+8. **Audio**: `python3 sfx.py timing.json voice.mp3 music.mp3 final_audio.wav` (voice delayed 1 s, music ducked, scene SFX). Mux: `ffmpeg -i video_silent.mp4 -i final_audio.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest AWT_Gold_Update_<YYYY-MM-DD>.mp4`. Spot-check two frames around the join; `SendUserFile` the MP4.
+9. **Title / description**: title ≤ 100 chars stating level + view; description = 3-signal summary, chapters from `timing.json` scene starts (m:ss), disclaimer, data note ("Chart: PAXG-USD hourly via Coinbase as a spot-gold proxy; option-gamma panel is illustrative"), AI note, hashtags `#gold #xauusd #goldprice #trading #forex`.
+10. **Thumbnail**: `vidiq_user_videos` (channelId, limit 2) → last two `thumbnailUrl` as `referenceImages` → `vidiq_generate_thumbnail` with title and `userQuery`: dark futuristic trading desk, faceless white mannequin presenter in black on the left, glowing gold candlestick chart with a red dashed level line on the right, big gold 2–3 word headline + red subline, no other text. Keep `imageUrl`.
+11. **Publish**: copy MP4 to `/home/claude/awt-video-drop/videos/`, commit, push (git user "Claude" <noreply@anthropic.com>); verify `curl -sI https://raw.githubusercontent.com/JayRadan/awt-video-drop/main/videos/<file>.mp4` → 200. `mcp__Metricool_Social_Media_Management__createScheduledPost`: blogId `7357453`, date now+10 min (ISO with Berlin offset), info = `{autoPublish:true, draft:false, descendants:[], firstCommentText:"", hasNotReadNotes:false, media:[<raw url>], mediaAltText:[], providers:[{network:"youtube"}], publicationDate:{dateTime, timezone:"Europe/Berlin"}, shortener:false, smartLinkData:{ids:[]}, text:<description>, youtubeData:{title, type:"video", privacy, tags:[...], category:"EDUCATION", madeForKids:false, isAiGeneratedContent:true}}`. When the result's `media` shows a `static.metricool.com` URL, `git rm` the MP4 and push.
+12. **After publish**: `mcp__claude-code-remote__send_later` 15 min → `vidiq_user_videos` for the new videoId → `vidiq_update_video_thumbnail` (channelId, videoId, thumbnail=imageUrl). On `verification_required`, ask the user to verify YouTube in vidIQ and retry when he confirms. Report `https://youtu.be/<id>`.
+
+## Style reference
+Dark navy/black, gold `#F2C14E`, red `#FF4D4D`, green `#2EE6A6`, muted grey; quant-terminal HUD; real candlestick chart with the key level as a red dashed line labelled by its role; side panels (positioning flow, option-gamma profile, macro regime); typewriter captions synced to the voice; data ticker from the real candles; geometric wolf emblem intro/outro. Sound: whoosh on scene change, thud + alert when the level locks, three down-ticks on rejections, impact on the verdict, ascending blips on the 1-2-3 recap, resolve chord on outro, music bed ducked under voice.
+
+## If something is missing
+- Coinbase fails: try `fetch_duka_fallback.py` once (one request); if that fails too, render without `candles.json` and state "illustrative chart" in the description and to the user.
+- A domain is blocked (403 CONNECT): name the domain for claude.ai → Settings → Capabilities and continue with what can be done. Never disguise requests or retry around a block.
+- vidIQ `verification_required`: stop that step, ask the user to verify YouTube in vidIQ.
+- Never create public repos; never regenerate paid media without saying so.

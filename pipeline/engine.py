@@ -62,7 +62,7 @@ if os.path.exists("candles.json"):
     _d = json.load(open("candles.json"))["candles"][-170:]
     if len(_d) > 50:
         C = [(c["o"], c["h"], c["l"], c["c"], c["v"]) for c in _d]
-        print("using real candles:", len(C), _d[0]["t"], "->", _d[-1]["t"])
+        print("using real candles:", len(C), _d[0]["t"], "->", _d[-1]["t"], flush=True)
 N = len(C)
 PMIN, PMAX = 4072.0, 4186.0
 if os.path.exists("candles.json") and len(C) > 50:
@@ -154,24 +154,33 @@ def topbar(d, g, t, u=1.0, price=None):
     s = f"{flick:,.2f}"
     d.text((W - 110 - tw(d, s, F["h3"]), 18), s, font=F["h3"], fill=alpha(GOLD, u))
     g.text((W - 110 - tw(d, s, F["h3"]), 18), s, font=F["h3"], fill=mix((0, 0, 0), GOLD, 0.35 * u))
-    d.text((W - 395, 26), "GC FUT", font=F["tag"], fill=alpha(MUTED, u))
+    d.text((W - 430, 26), "GOLD SPOT ≈", font=F["tag"], fill=alpha(MUTED, u))
     dot = alpha(GREEN if int(t * 2) % 2 == 0 else (20, 90, 60), u)
-    d.ellipse([W - 425, 36, W - 413, 48], fill=dot)
+    d.ellipse([W - 460, 36, W - 448, 48], fill=dot)
     d.text((W - 60, 26), "LIVE", font=F["tag"], fill=alpha(MUTED, u))
 
-TICK = [("XAUUSD", "4,147.80", -0.42), ("XAGUSD", "51.92", -0.88), ("DXY", "103.84", +0.21), ("US10Y", "4.31%", +0.03),
-        ("WTI", "61.40", -1.12), ("GC DEC26", "4,151.2", -0.39), ("SPX", "6,842", +0.18), ("BTC", "118,420", -0.6)]
+def _mk_tick():
+    last = C[-1][3]; prev = C[-25][3] if len(C) > 25 else C[0][0]
+    hi2w = max(c[1] for c in C); lo2w = min(c[2] for c in C)
+    d24 = (last / prev - 1) * 100
+    return [("XAUUSD", f"{last:,.2f}", d24), ("24H HIGH", f"{max(c[1] for c in C[-24:]):,.2f}", 0.0), ("24H LOW", f"{min(c[2] for c in C[-24:]):,.2f}", 0.0),
+            ("RANGE HIGH", f"{hi2w:,.2f}", 0.0), ("RANGE LOW", f"{lo2w:,.2f}", 0.0), ("TO LEVEL", f"{LEVEL - last:+,.1f}", LEVEL - last),
+            ("KEY LEVEL", f"{LEVEL:,.0f} SPOT", 0.0), ("FUT LEVEL", "4,150", 0.0)]
+TICK = None
 def ticker(d, t, u=1.0):
     y = H - 46
     rr(d, [0, y - 12, W, H], 0, PANEL)
     d.line([(0, y - 12), (W, y - 12)], fill=GRID2, width=1)
+    global TICK
+    if TICK is None: TICK = _mk_tick()
     x = -int((t * 110) % 2600)
     while x < W:
         for sym, px, chg in TICK:
-            col = GREEN if chg >= 0 else RED
+            col = GREEN if chg > 0 else (RED if chg < 0 else MUTED)
             d.text((x, y), sym, font=F["tag"], fill=alpha(MUTED, u)); x += tw(d, sym, F["tag"]) + 14
             d.text((x, y), px, font=F["tag"], fill=alpha(WHITE, u)); x += tw(d, px, F["tag"]) + 10
-            s = f"{chg:+.2f}%"; d.text((x, y), s, font=F["tag"], fill=alpha(col, u)); x += tw(d, s, F["tag"]) + 48
+            s = f"{chg:+.2f}%" if sym == "XAUUSD" else ""
+            if s: d.text((x, y), s, font=F["tag"], fill=alpha(col, u)); x += tw(d, s, F["tag"]) + 48
 
 def caption(d, g, t, u=1.0):
     cur = next((s for s in T["sentences"] if s["start"] <= t < s["end"]), None)
@@ -250,7 +259,7 @@ def chart(d, g, box, t, i0=0, i1=None, frac=1.0, level=False, level_u=1.0, playh
             d.line([(xx, ly), (min(xx + 16, xe), ly)], fill=RED, width=3)
         g.line([(x0 + 12, ly), (xe, ly)], fill=(70, 20, 20), width=8)
         if level_u >= 1:
-            lab = "4,150  ·  DEALER GAMMA  ·  PUT WALL"
+            lab = os.environ.get("LEVEL_LABEL", "4,150 FUT  ≈  4,132 SPOT  ·  DEALER GAMMA  ·  PUT WALL")
             lw = tw(d, lab, F["tag"])
             rr(d, [x0 + 24, ly - 46, x0 + 24 + lw + 30, ly - 10], 6, (50, 16, 20), outline=RED)
             d.text((x0 + 39, ly - 40), lab, font=F["tag"], fill=RED)
@@ -265,7 +274,7 @@ def chart(d, g, box, t, i0=0, i1=None, frac=1.0, level=False, level_u=1.0, playh
             base.paste(Image.alpha_composite(base.crop((x0, y0, x1, int(ly))).convert("RGBA"), ov).convert("RGB"), (x0, y0))
     if rejections:
         ly = py(LEVEL)
-        hits = [i for i in vis if C[i][1] >= LEVEL - 0.5][-6:]
+        hits = [i for i in vis if C[i][1] >= LEVEL - 4 and C[i][3] < LEVEL][-6:]
         for k, i in enumerate(hits):
             xx = px(i)
             d.ellipse([xx - 12, ly - 12, xx + 12, ly + 12], outline=RED, width=2)
@@ -296,7 +305,7 @@ def chart(d, g, box, t, i0=0, i1=None, frac=1.0, level=False, level_u=1.0, playh
 def gamma_panel(d, g, box, t, u=1.0, highlight=False):
     x0, y0, x1, y1 = box
     rr(d, box, 10, PANEL, outline=GRID2)
-    d.text((x0 + 20, y0 + 16), "OPTION GAMMA PROFILE · BY STRIKE", font=F["tag"], fill=alpha(MUTED, u))
+    d.text((x0 + 20, y0 + 16), "OPTION GAMMA · GC FUTURES STRIKES (ILLUSTRATIVE)", font=F["tag"], fill=alpha(MUTED, u))
     d.text((x0 + 20, y0 + 42), "puts", font=F["tiny"], fill=alpha(RED, u)); d.text((x1 - 60, y0 + 42), "calls", font=F["tiny"], fill=alpha(GREEN, u))
     mid = (x0 + x1) / 2 + 20
     rows = STRIKES[::-1]
@@ -387,7 +396,7 @@ def render(t):
         d.line([(0, sy), (W, sy)], fill=(20, 28, 44), width=2)
     elif p == 1:  # range
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, CHART_BOX, t, frac=ease(lt / 6.0), title="XAUUSD · 1H · LAST 2 WEEKS", level=False)
+        chart(d, g, CHART_BOX, t, frac=ease(lt / 6.0), title="GOLD · 1H · LAST 2 WEEKS · SPOT-EQUIVALENT", level=False)
         x0, y0, x1, y1 = SIDE_BOX
         rr(d, SIDE_BOX, 10, PANEL, outline=GRID2)
         d.text((x0 + 20, y0 + 16), "STATE", font=F["tag"], fill=MUTED)
@@ -400,19 +409,19 @@ def render(t):
         caption(d, g, t)
     elif p == 2:  # players
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, CHART_BOX, t, title="XAUUSD · 1H", level=False)
+        chart(d, g, CHART_BOX, t, title="GOLD · 1H", level=False)
         positioning_panel(d, g, SIDE_BOX, t, ease(lt / 2.5))
         big_label(d, g, 70, 150, "SIGNAL 1 · THE BIG PLAYERS", WHITE, ease(lt / 0.6), "h2")
         caption(d, g, t)
     elif p == 3:  # gamma level
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, CHART_BOX, t, title="XAUUSD · 1H · GC FUTURES", level=True, level_u=ease((lt - 1.0) / 1.6))
+        chart(d, g, CHART_BOX, t, title="GOLD · 1H · LEVEL FROM GC FUTURES", level=True, level_u=ease((lt - 1.0) / 1.6))
         gamma_panel(d, g, SIDE_BOX, t, ease(lt / 2.0), highlight=lt > 4)
         big_label(d, g, 70, 150, "SIGNAL 2 · THE OPTIONS MARKET", WHITE, ease(lt / 0.6), "h2")
         caption(d, g, t)
     elif p == 4:  # put-heavy above price
         topbar(d, g, t, u); ticker(d, t, u)
-        px, py = chart(d, g, CHART_BOX, t, title="XAUUSD · 1H · GC FUTURES", level=True, wall=True)
+        px, py = chart(d, g, CHART_BOX, t, title="GOLD · 1H · LEVEL FROM GC FUTURES", level=True, wall=True)
         gamma_panel(d, g, SIDE_BOX, t, 1.0, highlight=True)
         big_label(d, g, 70, 150, "PUT-HEAVY LEVEL ABOVE PRICE", WHITE, ease(lt / 0.6), "h2")
         if lt > 7:
@@ -426,12 +435,12 @@ def render(t):
     elif p == 5:  # rejection
         topbar(d, g, t, u); ticker(d, t, u)
         zu = ease_io(lt / 2.0)
-        px, py = chart(d, g, CHART_BOX, t, title="XAUUSD · 1H · ZOOM", level=True, zoom_u=zu, rejections=lt > 2.5, wall=True)
+        px, py = chart(d, g, CHART_BOX, t, title="GOLD · 1H · ZOOM", level=True, zoom_u=zu, rejections=lt > 2.5, wall=True)
         x0, y0, x1, y1 = SIDE_BOX
         rr(d, SIDE_BOX, 10, PANEL, outline=GRID2)
         d.text((x0 + 20, y0 + 16), "ORDER FLOW READ", font=F["tag"], fill=MUTED)
         big_label(d, g, x0 + 20, y0 + 60, "REJECTING", RED, ease((lt - 2.5) / 0.6), "h1")
-        d.text((x0 + 20, y0 + 150), "under 4,150 · again and again", font=F["h3"], fill=alpha(WHITE, ease((lt - 3) / 0.6)))
+        d.text((x0 + 20, y0 + 150), "under 4,150 fut / 4,132 spot", font=F["h3"], fill=alpha(WHITE, ease((lt - 3) / 0.6)))
         rows = [("hedgers & buyers", "orders being filled"), ("someone, somewhere", "feeding sell positions"), ("the buying", "is being absorbed")]
         for k, (a, b) in enumerate(rows):
             yy = y0 + 240 + k * 120; uu = ease((lt - 7 - k * 3.5) / 0.6)
@@ -444,7 +453,7 @@ def render(t):
         caption(d, g, t)
     elif p == 6:  # regime
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, CHART_BOX, t, title="XAUUSD · 1H", level=True)
+        chart(d, g, CHART_BOX, t, title="GOLD · 1H", level=True)
         macro_panel(d, g, SIDE_BOX, t, ease(lt / 2.5))
         big_label(d, g, 70, 150, "SIGNAL 3 · THE REGIME", WHITE, ease(lt / 0.6), "h2")
         if lt > 6:
@@ -453,7 +462,7 @@ def render(t):
         caption(d, g, t)
     elif p == 7:  # summary
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, (40, 110, 900, 870), t, title="XAUUSD · 1H", level=True, zoom_u=1.0, rejections=True, wall=True)
+        chart(d, g, (40, 110, 900, 870), t, title="GOLD · 1H", level=True, zoom_u=1.0, rejections=True, wall=True)
         x0, y0, x1, y1 = (930, 110, 1880, 870)
         rr(d, (x0, y0, x1, y1), 10, PANEL, outline=GRID2)
         d.text((x0 + 24, y0 + 16), "PUTTING IT TOGETHER", font=F["tag"], fill=MUTED)
@@ -468,7 +477,7 @@ def render(t):
         caption(d, g, t)
     elif p == 8:  # conclusion
         topbar(d, g, t, u); ticker(d, t, u)
-        chart(d, g, CHART_BOX, t, title="XAUUSD · 1H · OUTLOOK", level=True, zoom_u=1.0, wall=True, breakdown=ease((lt - 2.0) / 1.6))
+        chart(d, g, CHART_BOX, t, title="GOLD · 1H · OUTLOOK", level=True, zoom_u=1.0, wall=True, breakdown=ease((lt - 2.0) / 1.6))
         x0, y0, x1, y1 = SIDE_BOX
         rr(d, SIDE_BOX, 10, PANEL, outline=GRID2)
         d.text((x0 + 20, y0 + 16), "MY VIEW", font=F["tag"], fill=MUTED)
@@ -476,8 +485,9 @@ def render(t):
         big_label(d, g, x0 + 20, y0 + 150, "LOWER", RED, ease((lt - 0.2) / 0.6), "h1")
         d.text((x0 + 20, y0 + 270), "from around", font=F["sm"], fill=alpha(MUTED, ease((lt - 1) / 0.5)))
         big_label(d, g, x0 + 20, y0 + 300, "4,150", GOLD, ease((lt - 1) / 0.5), "hero")
-        d.text((x0 + 20, y0 + 450), "expect the price to fall through", font=F["h3"], fill=alpha(WHITE, ease((lt - 3) / 0.6)))
-        d.text((x0 + 20, y0 + 500), "this is the level I'm watching", font=F["sm"], fill=alpha(MUTED, ease((lt - 6) / 0.6)))
+        d.text((x0 + 20, y0 + 440), "futures  ·  ≈ 4,132 spot", font=F["sm"], fill=alpha(MUTED, ease((lt - 1.5) / 0.5)))
+        d.text((x0 + 20, y0 + 480), "expect the price to fall through", font=F["h3"], fill=alpha(WHITE, ease((lt - 3) / 0.6)))
+        d.text((x0 + 20, y0 + 530), "this is the level I'm watching", font=F["sm"], fill=alpha(MUTED, ease((lt - 6) / 0.6)))
         caption(d, g, t)
     else:  # outro
         v = ease(lt / 0.8)
