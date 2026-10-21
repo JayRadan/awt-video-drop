@@ -377,23 +377,35 @@ def render(t):
     d._image = base
     s = scene_at(t); p = s["para"]; lt = t - s["start"]; u = ease(lt / 0.5)
 
-    if p == 0:  # intro
-        v = ease(t / 0.8)
-        wolf_mark(d, g, W / 2, 330, 150 * (0.6 + 0.4 * v), GOLD, v)
-        big_label(d, g, W / 2 - tw(d, "ANONYMOUS WOLF TRADER", F["h1"]) / 2, 520, "ANONYMOUS WOLF TRADER", WHITE, ease((t - 0.4) / 0.6))
-        d.rectangle([W / 2 - 240 * ease((t - 0.9) / 0.6), 615, W / 2 + 240 * ease((t - 0.9) / 0.6), 619], fill=GOLD)
-        sub = "GOLD UPDATE  ·  21 OCT 2026  ·  XAUUSD"
-        d.text((W / 2 - tw(d, sub, F["h3"]) / 2, 640), sub, font=F["h3"], fill=alpha(MUTED, ease((t - 1.2) / 0.6)))
-        tags = ["POSITIONING", "OPTION GAMMA", "MACRO REGIME"]
-        xx = W / 2 - 420
-        for k, tg in enumerate(tags):
-            uu = ease((t - 1.8 - k * 0.25) / 0.5)
-            rr(d, [xx, 720, xx + 260, 768], 24, alpha(PANEL2, uu), outline=alpha(GOLD, uu * 0.6))
-            d.text((xx + 130 - tw(d, tg, F["tag"]) / 2, 734), tg, font=F["tag"], fill=alpha(GOLD, uu))
-            xx += 290
-        # scanning line
-        sy = int((t * 260) % H)
-        d.line([(0, sy), (W, sy)], fill=(20, 28, 44), width=2)
+    if p == 0:  # cold open: hook over the live chart, brand sting at the end
+        HOOK = os.environ.get("HOOK", "EVERYONE IS WAITING FOR GOLD TO BREAK OUT.|I THINK IT'S ABOUT TO FALL THROUGH.").split("|")
+        topbar(d, g, t, u); ticker(d, t, u)
+        chart(d, g, (40, 110, 1880, 870), t, frac=1.0, level=True, level_u=ease((lt - 0.3) / 1.0), zoom_u=1.0, wall=True, crosshair=False)
+        # dark veil + hook text
+        veil = Image.new("RGB", (W, H), (0, 0, 0))
+        base.paste(Image.blend(base, veil, 0.45 * ease(lt / 0.4)))
+        d = ImageDraw.Draw(base); d._image = base
+        y = 560
+        for k, line in enumerate(HOOK):
+            v = ease((lt - 0.2 - k * 0.9) / 0.5)
+            col = WHITE if k < len(HOOK) - 1 else GOLD
+            lw = tw(d, line, F["h1"])
+            rr(d, [80, y - 10, 80 + lw + 50, y + 92], 8, alpha((6, 8, 14), v * 0.9))
+            d.rectangle([80, y - 10, 88, y + 92], fill=alpha(col, v))
+            big_label(d, g, 110, y, line, col, v, "h1")
+            y += 112
+        # brand sting in the last 1.6 s of the scene
+        rem = s["end"] - t
+        if rem < 1.6:
+            v = ease((1.6 - rem) / 0.4)
+            rr(d, [0, 0, W, H], 0, alpha(BG, 0) if v == 0 else None)
+            veil2 = Image.new("RGB", (W, H), BG)
+            base.paste(Image.blend(base, veil2, 0.85 * v)); d = ImageDraw.Draw(base); d._image = base
+            wolf_mark(d, g, W / 2, 400, 120, GOLD, v)
+            big_label(d, g, W / 2 - tw(d, "ANONYMOUS WOLF TRADER", F["h1"]) / 2, 560, "ANONYMOUS WOLF TRADER", WHITE, v)
+            d.text((W / 2 - tw(d, "GOLD UPDATE", F["h3"]) / 2, 660), "GOLD UPDATE", font=F["h3"], fill=alpha(MUTED, v))
+        else:
+            caption(d, g, t)
     elif p == 1:  # range
         topbar(d, g, t, u); ticker(d, t, u)
         chart(d, g, CHART_BOX, t, frac=ease(lt / 6.0), title="GOLD · 1H · LAST 2 WEEKS · SPOT-EQUIVALENT", level=False)
@@ -494,7 +506,7 @@ def render(t):
         wolf_mark(d, g, W / 2, 300, 130, GOLD, v)
         big_label(d, g, W / 2 - tw(d, "ANONYMOUS WOLF TRADER", F["h1"]) / 2, 470, "ANONYMOUS WOLF TRADER", WHITE, v)
         d.rectangle([W / 2 - 240 * v, 565, W / 2 + 240 * v, 569], fill=GOLD)
-        s1 = "SUBSCRIBE FOR THE NEXT GOLD UPDATE"
+        s1 = os.environ.get("CTA", "ARE YOU SHORT GOLD HERE?  TELL ME IN THE COMMENTS")
         pw_ = tw(d, s1, F["h3"]) / 2 + 40
         rr(d, [W / 2 - pw_, 600, W / 2 + pw_, 660], 30, alpha(GOLD, ease((lt - 0.6) / 0.6)))
         d.text((W / 2 - tw(d, s1, F["h3"]) / 2, 612), s1, font=F["h3"], fill=alpha((20, 16, 6), ease((lt - 0.6) / 0.6)))
