@@ -55,9 +55,19 @@ def gen_candles(n=170):
         vol = abs(c - o) * 40 + random.random() * 120 + (160 if i > n - 30 else 0)
         out.append((o, hi, lo, c, vol)); p = c
     return out
+import os
+LEVEL = float(os.environ.get("LEVEL", LEVEL))
 C = gen_candles()
+if os.path.exists("candles.json"):
+    _d = json.load(open("candles.json"))["candles"][-170:]
+    if len(_d) > 50:
+        C = [(c["o"], c["h"], c["l"], c["c"], c["v"]) for c in _d]
+        print("using real candles:", len(C), _d[0]["t"], "->", _d[-1]["t"])
 N = len(C)
 PMIN, PMAX = 4072.0, 4186.0
+if os.path.exists("candles.json") and len(C) > 50:
+    _lo = min(c[2] for c in C); _hi = max(c[1] for c in C); _pad = (_hi - _lo) * 0.12
+    PMIN, PMAX = _lo - _pad, max(_hi, LEVEL) + _pad
 
 # gamma profile by strike (illustrative): puts negative, calls positive
 STRIKES = list(range(4050, 4255, 10))
@@ -201,7 +211,8 @@ def chart(d, g, box, t, i0=0, i1=None, frac=1.0, level=False, level_u=1.0, playh
     a = int(i0 + (i0 - 0) * 0); b = i1
     lo_p, hi_p = PMIN, PMAX
     if zoom_u > 0:
-        a = int(0 + (N - 46) * zoom_u); lo_p = PMIN + (4098 - PMIN) * zoom_u; hi_p = PMAX - (PMAX - 4170) * zoom_u
+        _zl = min(c[2] for c in C[-46:]) - 6; _zh = max(max(c[1] for c in C[-46:]), LEVEL) + 8
+        a = int(0 + (N - 46) * zoom_u); lo_p = PMIN + (_zl - PMIN) * zoom_u; hi_p = PMAX - (PMAX - _zh) * zoom_u
     vis = list(range(a, b))
     n_show = max(2, int(len(vis) * frac))
     vis = vis[:n_show]
