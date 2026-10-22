@@ -57,6 +57,10 @@ def gen_candles(n=170):
     return out
 import os
 LEVEL = float(os.environ.get("LEVEL", LEVEL))
+_SCENES = None
+if os.environ.get("SCENES"):
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("scenes", os.environ["SCENES"] + ".py"); _SCENES = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_SCENES)
 C = gen_candles()
 if os.path.exists("candles.json"):
     _d = json.load(open("candles.json"))["candles"][-170:]
@@ -67,6 +71,7 @@ N = len(C)
 PMIN, PMAX = 4072.0, 4186.0
 if os.path.exists("candles.json") and len(C) > 50:
     _lo = min(c[2] for c in C); _hi = max(c[1] for c in C); _pad = (_hi - _lo) * 0.12
+    _lo = min(_lo, float(os.environ.get("LEVEL2", _lo)))
     PMIN, PMAX = _lo - _pad, max(_hi, LEVEL) + _pad
 
 # gamma profile by strike (illustrative): puts negative, calls positive
@@ -147,7 +152,7 @@ def topbar(d, g, t, u=1.0, price=None):
     d.line([(0, 84), (W, 84)], fill=GRID2, width=1)
     wolf_mark(d, g, 64, 42, 26, GOLD, u)
     d.text((110, 20), "ANONYMOUS WOLF TRADER", font=F["h3"], fill=alpha(WHITE, u))
-    d.text((600, 30), "XAUUSD  ·  GOLD UPDATE  ·  21 OCT 2026", font=F["tag"], fill=alpha(MUTED, u))
+    d.text((600, 30), "XAUUSD  ·  GOLD UPDATE  ·  " + os.environ.get("VDATE", "21 OCT 2026"), font=F["tag"], fill=alpha(MUTED, u))
     # live readout
     p = price if price is not None else C[-1][3]
     flick = p + math.sin(t * 7.3) * 0.6 + math.sin(t * 2.1) * 0.4
@@ -406,6 +411,11 @@ def render(t):
             d.text((W / 2 - tw(d, "GOLD UPDATE", F["h3"]) / 2, 660), "GOLD UPDATE", font=F["h3"], fill=alpha(MUTED, v))
         else:
             caption(d, g, t)
+    elif _SCENES is not None and p not in (9,) and _SCENES.render_scene(p, lt, t, s, dict(
+            d=d, g=g, base=base, W=W, H=H, F=F, ease=ease, alpha=alpha, mix=mix, rr=rr, tw=tw, big_label=big_label,
+            chart=chart, topbar=topbar, ticker=ticker, caption=caption, GOLD=GOLD, RED=RED, GREEN=GREEN, WHITE=WHITE, MUTED=MUTED,
+            PANEL=PANEL, PANEL2=PANEL2, GRID2=GRID2, BG=BG, DIM=DIM, CHART_BOX=CHART_BOX, SIDE_BOX=SIDE_BOX, C=C, LEVEL=LEVEL, N=N)):
+        pass
     elif p == 1:  # range
         topbar(d, g, t, u); ticker(d, t, u)
         chart(d, g, CHART_BOX, t, frac=ease(lt / 6.0), title="GOLD · 1H · LAST 2 WEEKS · SPOT-EQUIVALENT", level=False)
