@@ -103,10 +103,14 @@ def vignette(arr, k=0.5):
     if k not in _VIG:
         v = 1 - k * (((_XX - W / 2) / (W / 2)) ** 2 + ((_YY - H / 2) / (H / 2)) ** 2) ** 1.3
         _VIG[k] = np.clip(v, 0.25, 1)[..., None].astype(np.float32)
-    return (arr * _VIG[k]).astype(np.uint8)
+    return (arr.astype(np.float32) * _VIG[k]).astype(np.uint8)
 
 def glow_composite(base, glow, k=51, strength=1.0):
-    b = np.asarray(base).astype(np.float32); g = cv2.GaussianBlur(np.asarray(glow).astype(np.float32), (k, k), 0) * strength
+    b = np.asarray(base).astype(np.int16)
+    g = np.asarray(glow)
+    small = cv2.resize(g, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
+    small = cv2.GaussianBlur(small, (max(3, (k // 4) | 1), max(3, (k // 4) | 1)), 0)
+    g = (cv2.resize(small, (W, H), interpolation=cv2.INTER_LINEAR).astype(np.float32) * strength).astype(np.int16)
     return np.clip(b + g, 0, 255).astype(np.uint8)
 
 # ---------- chart (drawn flat, then camera-warped) ----------
@@ -177,7 +181,7 @@ def reflection(canvas, y_floor, strength=0.22):
     if band <= 10: return canvas
     src = canvas[y_floor - band:y_floor][::-1].astype(np.float32)
     fade = np.linspace(strength, 0.0, band)[:, None, None]
-    src = cv2.GaussianBlur(src, (0, 0), 3) * fade
+    src = cv2.GaussianBlur(src, (0, 0), 2) * fade
     canvas[y_floor:y_floor + band] = np.clip(canvas[y_floor:y_floor + band] + src, 0, 255).astype(np.uint8)
     return canvas
 
@@ -315,14 +319,12 @@ def tpl_impact(P, t, lt, s, canvas, d, g):
     if P.get("count"):
         a, b = P["count"]; num = a + (b - a) * ease(lt / 1.6); txt = P.get("fmt", "{:,.0f}").format(num)
     else: txt = val
-    sc = 0.9 + 0.1 * v
+    r = 260 + 160 * ease(lt / 1.2); d.ellipse([W / 2 - r, 420 - r * 0.55, W / 2 + r, 420 + r * 0.55], outline=alpha(GOLD, (1 - ease(lt / 1.2)) * 0.8), width=3)
     big(d, g2, W / 2, 330, txt, P.get("col", GOLD), v, "num", center=True)
     if sub:
         v2 = ease((lt - 1.2) / 0.6)
         for i, l in enumerate(sub.split("|")):
             big(d, g2, W / 2, 600 + i * 70, l, WHITE if i == 0 else MUTED, v2, "h2" if i == 0 else "h3", center=True)
-    # ring pulse
-    r = 260 + 160 * ease(lt / 1.2); d.ellipse([W / 2 - r, 420 - r * 0.55, W / 2 + r, 420 + r * 0.55], outline=alpha(GOLD, (1 - ease(lt / 1.2)) * 0.8), width=3)
     return pil
 
 def tpl_quote(P, t, lt, s, canvas, d, g):
@@ -477,12 +479,14 @@ def render_scene(t, s):
     out = glow_composite(pil, gl, 41, 0.9)
     return vignette(out, 0.22)
 
+_PREV = {}
 def render(t):
     s = scene_at(t); img = render_scene(t, s)
     # transition in from previous scene for the first 0.5 s
     idx = SC.index(s); lt = t - s["start"]
     if idx > 0 and lt < 0.5:
-        prev = render_scene(s["start"] - 0.001, SC[idx - 1]); kind = ["wipe", "zoom", "fade"][idx % 3]
+        if idx not in _PREV: _PREV[idx] = render_scene(s["start"] - 0.001, SC[idx - 1])
+        prev = _PREV[idx]; kind = ["wipe", "zoom", "fade"][idx % 3]
         img = transition(prev.astype(np.float32), img.astype(np.float32), ease_io(lt / 0.5), kind)
     img[::4] = (img[::4].astype(np.int16) - 5).clip(0, 255).astype(np.uint8)
     gf = min(1.0, t / 0.8, max(0.0, (TOTAL - t) / 1.2))
