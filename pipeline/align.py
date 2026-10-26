@@ -77,6 +77,34 @@ for i in range(1, len(tok_time)):
     if tok_time[i][0] < tok_time[i - 1][1]:
         tok_time[i] = (tok_time[i - 1][1], max(tok_time[i][1], tok_time[i - 1][1] + 0.05))
 
+# 3b) snap word edges to real speech: the recogniser folds pauses into the next word,
+#     which makes captions run ahead after every pause. Trim leading/trailing silence.
+import wave as _wave, numpy as _np
+with _wave.open(wav) as _wf:
+    _sr = _wf.getframerate(); _a = _np.frombuffer(_wf.readframes(_wf.getnframes()), _np.int16).astype(float)
+_fr = _sr // 100; _e = _np.sqrt((_a[:len(_a) // _fr * _fr].reshape(-1, _fr) ** 2).mean(1))
+_thr = _np.percentile(_e, 30) * 2.0; _sp = _e > _thr
+for i, (s0, s1) in enumerate(tok_time):
+    f0, f1 = int(s0 * 100), max(int(s0 * 100) + 1, int(s1 * 100))
+    look = _sp[f0:f0 + 120]                      # first speech within 1.2 s of the claimed start
+    if not look.any(): continue
+    on = f0 + int(_np.argmax(look))
+    if on - f0 >= 12:                            # >=120 ms of silence at the word start -> move it
+        s0 = on / 100 - 0.03
+        s1 = max(s1, s0 + 0.15)
+        if i > 0 and tok_time[i - 1][1] > s0 - 0.02:  # previous word ran into the pause: trim it
+            p0, p1 = tok_time[i - 1]; tok_time[i - 1] = (p0, max(p0 + 0.08, min(p1, s0 - 0.02)))
+    if i + 1 < len(tok_time) and tok_time[i + 1][0] < s1:
+        tok_time[i + 1] = (s1, max(tok_time[i + 1][1], s1 + 0.08))
+    tok_time[i] = (s0, s1)
+# trailing silence at the end of each word (so the highlight does not linger into pauses)
+for i, (s0, s1) in enumerate(tok_time):
+    f0, f1 = int(s0 * 100), int(s1 * 100)
+    seg = _sp[f0:f1]
+    if len(seg) and seg.any():
+        off = f0 + len(seg) - int(_np.argmax(seg[::-1]))
+        if f1 - off >= 15 and off / 100 + 0.05 - s0 >= 0.08: tok_time[i] = (s0, off / 100 + 0.05)
+
 # 4) sentence + scene times
 out_s = []
 for si_, s in enumerate(sents):
