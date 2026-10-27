@@ -30,6 +30,8 @@ for x in ks:
     else: break
 if k0 is not None and k1 > k0: segs.append((k0, k1))
 if concl: segs.append((concl[0]["start"], concl[-1]["end"]))
+if os.environ.get("SHORT_FULL"):          # teaser mode: use the whole video
+    segs = [(0.0, T["scenes"][-1]["end"])]
 total = sum(b - a for a, b in segs)
 print("segments", [(round(a, 1), round(b, 1)) for a, b in segs], "total", round(total, 1))
 
@@ -76,7 +78,23 @@ ass = ["[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}"
        "Style: Cap,Inter,54,&H00F8F0EC,&H00FFFFFF,&H00100A07,&H80000000,1,0,0,0,100,100,0,0,1,3,0,8,60,60," + str(vy0 + 608 + 40) + ",1",
        "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
 offset = 0.0
-for (a, b) in segs:
+if os.environ.get("SHORT_FULL"):
+    ass[ass.index([x for x in ass if x.startswith("Style: Cap")][0])] = ("Style: Cap,Inter,74,&H00F8F0EC,&H00FFFFFF,&H00100A07,&H80000000,1,0,0,0,100,100,0,0,1,4,0,8,60,60,"
+                                                                     + str(vy0 + 608 + 50) + ",1")
+    WS = T["words"]; i = 0
+    while i < len(WS):                       # chunks of up to 3 words inside a sentence, active word gold + pop
+        ch = [WS[i]]
+        while len(ch) < 3 and i + len(ch) < len(WS) and WS[i + len(ch)]["sent"] == ch[0]["sent"] and not ch[-1]["w"][-1] in ".,?!:": ch.append(WS[i + len(ch)])
+        for k, w in enumerate(ch):
+            st = w["start"]; en = ch[k + 1]["start"] if k + 1 < len(ch) else (WS[i + len(ch)]["start"] if i + len(ch) < len(WS) else w["end"] + 0.4)
+            en = min(en, w["end"] + 0.6)
+            txt = " ".join(("{\\c&H4EC1F2&\\fscx112\\fscy112}" + x["w"].upper() + "{\\r}") if j == k else x["w"].upper() for j, x in enumerate(ch))
+            ass.append(f"Dialogue: 0,{ts(st)},{ts(en)},Cap,,0,0,0,,{txt}")
+        i += len(ch)
+    segs_caps = []
+else:
+    segs_caps = segs
+for (a, b) in segs_caps:
     for x in sents:
         s0, s1 = max(x["start"], a), min(x["end"], b)
         if s1 - s0 > 0.15:
