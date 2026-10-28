@@ -30,6 +30,8 @@ for x in ks:
     else: break
 if k0 is not None and k1 > k0: segs.append((k0, k1))
 if concl: segs.append((concl[0]["start"], concl[-1]["end"]))
+if os.environ.get("SHORT_SEGS"):          # explicit segments "a-b,a-b,..." (seconds in the long video)
+    segs = [tuple(float(x) for x in p.split("-")) for p in os.environ["SHORT_SEGS"].split(",")]
 if os.environ.get("SHORT_FULL"):          # teaser mode: use the whole video
     segs = [(0.0, T["scenes"][-1]["end"])]
 total = sum(b - a for a, b in segs)
