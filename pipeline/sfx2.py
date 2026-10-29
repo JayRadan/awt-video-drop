@@ -61,6 +61,23 @@ def place(track, snd, at):
     i = int(at * SR)
     if i < 0 or i >= len(track): return
     mlen = min(len(snd), len(track) - i); track[i:i + mlen] += snd[:mlen]
+def swish(gain=0.3):            # short swoosh for element reveals
+    return whoosh(0.28, gain=gain)
+def pop(f=900, gain=0.3):          # punchy UI pop: blip + click transient
+    b = blip(f, 0.16, gain); c = tick(3200, 0.012, gain * 0.8); b[:len(c)] += c; return b
+def ding(gain=0.26):               # success chime (two notes up)
+    a = blip(1318, 0.35, gain); b = blip(1760, 0.5, gain); out = np.zeros(len(a) + int(0.09 * SR) + len(b)); out[:len(a)] += a; out[int(0.09 * SR):int(0.09 * SR) + len(b)] += b; return out
+def dun(gain=0.45):                # low warning hit for red items
+    t = np.arange(int(0.5 * SR)) / SR; return (np.sin(2 * np.pi * 82 * t) + 0.5 * np.sin(2 * np.pi * 123 * t)) * np.exp(-t * 6) * gain
+def boom(gain=0.9):                # cinematic hit: impact + noise burst + sub drop
+    a = impact(gain); t = np.arange(len(a)) / SR; sub = np.sin(2 * np.pi * np.cumsum(70 * np.exp(-t * 3) + 30) / SR) * np.exp(-t * 2.5) * gain * 0.7
+    return a + sub
+def reveal(track, at, col=None):
+    place(track, swish(0.22), at - 0.12)
+    if col == (46, 230, 166): place(track, ding(), at); place(track, thud(0.25), at)
+    elif col == (255, 77, 77): place(track, dun(), at); place(track, pop(520, 0.22), at)
+    else: place(track, pop(880 + random.randint(-60, 120), 0.28), at); place(track, thud(0.18), at)
+
 
 sfx = np.zeros(n_total, dtype=np.float32)
 scenes = T["scenes"]
@@ -69,19 +86,20 @@ for idx, s in enumerate(scenes):
     # transition sound (matches engine: wipe / zoom / fade by index % 3)
     if idx > 0:
         kind = ["wipe", "zoom", "fade"][idx % 3]
-        if kind == "wipe": place(sfx, whoosh(0.5, gain=0.42), st - 0.1)
-        elif kind == "zoom": place(sfx, riser(0.7, gain=0.3), st - 0.6); place(sfx, thud(gain=0.4), st)
-        else: place(sfx, whoosh(0.8, down=True, gain=0.25), st - 0.2)
+        place(sfx, riser(1.1, gain=0.32), st - 1.1)
+        if kind == "wipe": place(sfx, whoosh(0.55, gain=0.55), st - 0.15); place(sfx, thud(0.5), st)
+        elif kind == "zoom": place(sfx, whoosh(0.4, gain=0.4), st - 0.1); place(sfx, boom(0.55), st)
+        else: place(sfx, whoosh(0.8, down=True, gain=0.4), st - 0.2); place(sfx, thud(0.45), st + 0.05)
     if tpl in ("bumper",) or (idx == 0):
-        place(sfx, riser(2.0, gain=0.45), 0.0); place(sfx, thud(0.5), 2.0)
+        place(sfx, riser(1.8, gain=0.55), 0.0); place(sfx, boom(0.85), 1.8); place(sfx, shimmer(0.22), 2.0)
         for k in range(2): place(sfx, blip(1100 + k * 200, gain=0.22), 0.5 + k * 1.0)
     if tpl == "hero_chart":
         place(sfx, data_ticks(min(4.0, s["end"] - st), 24), st + 0.3)
         if P.get("level", True): place(sfx, thud(0.45), st + 1.2)
-        for e in P.get("entries", []): place(sfx, blip(720, gain=0.25), st + e[3])
+        for e in P.get("entries", []): reveal(sfx, st + e[3], e[1])
         if P.get("break_at"): place(sfx, whoosh(1.4, down=True, gain=0.4), st + P["break_at"]); place(sfx, impact(0.6), st + P["break_at"] + 1.2)
     if tpl == "impact":
-        place(sfx, impact(0.8), st + 0.1); place(sfx, shimmer(), st + 0.3)
+        place(sfx, riser(0.6, gain=0.35), st - 0.5); place(sfx, boom(1.0), st + 0.1); place(sfx, shimmer(0.25), st + 0.3); place(sfx, swish(0.3), st + 1.15); place(sfx, pop(990, 0.26), st + 1.25)
     if tpl == "quote":
         hot = set(w.upper() for w in P.get("hot", []))
         for w in T.get("words", []):
@@ -89,18 +107,21 @@ for idx, s in enumerate(scenes):
                 place(sfx, tick(2200, 0.04, 0.16), w["start"])
     if tpl == "timeline":
         for k in range(12): place(sfx, tick(900 + k * 40, 0.05, 0.12), st + 0.5 + k * 0.12)
-        for co in P.get("callouts", []): place(sfx, blip(760 if co.get("col") != (255, 77, 77) else 420, gain=0.24), st + co["at"])
+        for co in P.get("callouts", []): reveal(sfx, st + co["at"], co.get("col"))
     if tpl == "chain":
-        for it in P.get("items", []): place(sfx, blip(660 + 60 * P["items"].index(it), gain=0.26), st + it.get("at", 1))
+        for it in P.get("items", []): reveal(sfx, st + it.get("at", 1), it.get("col"))
+        if P.get("footer"): place(sfx, boom(0.5), st + P.get("footer_at", 8))
         for sp in P.get("sparks", []): place(sfx, data_ticks(2.0, 14, 0.04), st + sp.get("at", 0.5))
     if tpl == "split":
-        for r in P.get("rows", []): place(sfx, blip(520 if r.get("col") == (255, 77, 77) else 760, gain=0.22), st + r.get("at", 1))
-        if P.get("footer"): place(sfx, thud(0.4), st + P.get("footer_at", 8))
+        for r in P.get("rows", []): reveal(sfx, st + r.get("at", 1), r.get("col"))
+        if P.get("footer"): place(sfx, boom(0.5), st + P.get("footer_at", 8))
     if tpl == "cards":
-        for i, it in enumerate(P.get("items", [])): place(sfx, blip(600 + i * 90, gain=0.26), st + it.get("at", 1 + i * 2))
+        for i, it in enumerate(P.get("items", [])): reveal(sfx, st + it.get("at", 1 + i * 2), it.get("col"))
     if tpl == "outro":
-        place(sfx, chord(), st + 0.2); place(sfx, blip(880, gain=0.2), st + 0.9)
+        place(sfx, boom(0.6), st + 0.1); place(sfx, chord(0.4), st + 0.2); place(sfx, ding(0.24), st + 0.9)
 
+for w in T.get("words", []):
+    if any(ch.isdigit() for ch in w["w"]): place(sfx, tick(2600, 0.03, 0.09), w["start"])
 voice = load(VOICE); vtrack = np.zeros(n_total, dtype=np.float32); place(vtrack, voice, LEAD)
 mtrack = np.zeros(n_total, dtype=np.float32)
 if MUSIC != "none" and os.path.exists(MUSIC):
@@ -111,8 +132,8 @@ if MUSIC != "none" and os.path.exists(MUSIC):
         win = int(0.05 * SR); venv = np.convolve(np.abs(vtrack), np.ones(win) / win, mode="same")
         venv = np.convolve(venv, np.ones(int(0.3 * SR)) / int(0.3 * SR), mode="same")
         duck = 1.0 - 0.6 * np.clip(venv / (venv.max() + 1e-9) * 6, 0, 1)
-        mtrack = loop * 0.15 * duck
-mixd = vtrack + mtrack + sfx * 0.9
+        mtrack = loop * 0.17 * duck
+mixd = vtrack + mtrack + sfx * 1.0
 peak = np.abs(mixd).max()
 if peak > 0.98: mixd = mixd / peak * 0.98
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-", OUT], input=(mixd * 32767).astype(np.int16).tobytes(), check=True)

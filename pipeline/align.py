@@ -123,6 +123,28 @@ scenes[0]["start"] = 0.0
 scenes[-1]["end"] = lead + dur + 0.3
 words = [{"w": orig, "start": lead + tok_time[i][0], "end": lead + tok_time[i][1], "sent": tokens[i][1]}
          for i, orig in enumerate([w for p in paras for s in re.split(r"(?<=[.!?:])\s+", p) if s.strip() for w in s.split() if norm(w)])]
+# repair clusters the recogniser missed (>=4 words squeezed together): re-spread the whole sentences around
+# the cluster by word length, between the first sentence's start and the next sentence's start
+i = 0
+while i < len(words) - 1:
+    j = i
+    while j + 1 < len(words) and words[j + 1]["start"] - words[j]["start"] < 0.12: j += 1
+    if j - i >= 3:
+        s0, s1 = words[i]["sent"], words[j]["sent"]
+        if words[i]["start"] - words[max(0, i - 1)]["start"] < 0.12: s0 = max(0, s0 - 0)
+        idx = [k for k, w in enumerate(words) if s0 <= w["sent"] <= s1]
+        # also include the previous sentence if the cluster starts at a sentence start (pause absorbed earlier)
+        if idx[0] == i and s0 > 0: s0 -= 1; idx = [k for k, w in enumerate(words) if s0 <= w["sent"] <= s1]
+        t0 = words[idx[0]]["start"]
+        t1 = words[idx[-1] + 1]["start"] - 0.15 if idx[-1] + 1 < len(words) else words[idx[-1]]["end"]
+        wt = [len(words[k]["w"]) + 2 + (4 if words[k]["w"][-1] in ".,?!:" else 0) for k in idx]; tot = sum(wt); acc = t0
+        for k, q in zip(idx, wt):
+            d = (t1 - t0) * q / tot; words[k]["start"] = acc; words[k]["end"] = acc + d * (0.75 if words[k]["w"][-1] in ".,?!:" else 0.95); acc += d
+        for si in range(s0, s1 + 1):
+            ws = [w for w in words if w["sent"] == si]
+            if ws: out_s[si]["start"] = ws[0]["start"]; out_s[si]["end"] = max(out_s[si]["end"], ws[-1]["end"]) if si != s1 else ws[-1]["end"] + 0.15
+        j = idx[-1]
+    i = j + 1
 json.dump({"sentences": out_s, "scenes": scenes, "words": words}, open(out, "w"), indent=1)
 for sc in scenes: print(f"para {sc['para']}: {sc['start']:.1f} - {sc['end']:.1f}")
 os.remove(wav)
