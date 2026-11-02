@@ -64,7 +64,14 @@ def draw(img, box, spec, lt, data, F, S=1.0):
     # reveal
     rv = spec.get("reveal")
     vis_end = data.asof
-    if rv:
+    if rv and rv.get("keys"):                  # piecewise reveal: candles reach each 'until' exactly at its 'at'
+        ks = rv["keys"]; vis_end = ts(ks[0]["until"])
+        for a_, b_ in zip(ks, ks[1:]):
+            if lt >= b_["at"]: vis_end = ts(b_["until"])
+            elif lt > a_["at"]:
+                vis_end = lerp(ts(a_["until"]), ts(b_["until"]), (lt - a_["at"]) / max(0.05, b_["at"] - a_["at"])); break
+            else: break
+    elif rv:
         r0, r1 = ts(rv.get("from", data.c[0]["t"])), ts(rv.get("until", data.c[-1]["t"]))
         vis_end = lerp(r0, r1, ease_io((lt - rv.get("at", 0)) / rv.get("dur", 2.0)))
     cs = [c for c in data.c if va - 3600 <= c["ts"] <= vb and c["ts"] <= vis_end + 1]

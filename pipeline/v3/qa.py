@@ -68,7 +68,8 @@ def run(sb_path, tm_path, script_path, src_path, video, tag):
     for b in SB["beats"]:
         strs = visible_strings(b); issues = []
         for s in strs:
-            s2 = DAYS_RE.sub("", TIME_RE.sub("", s))
+            s2 = re.sub(r"\b\d{1,2}\s*(&|and|–|-|to)\s*(?=\d{1,2}\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))", "", TIME_RE.sub("", s), flags=re.I)
+            s2 = DAYS_RE.sub("", s2).replace("24/7", "")
             s2 = re.sub(r"\b(19|20)\d{2}\b", "", s2)                      # years
             s2 = re.sub(r"\b(1H|10-year|2-year|10y|2y|3 dissents|3 hike)\b", "", s2, flags=re.I)
             for v in nums(s2):
