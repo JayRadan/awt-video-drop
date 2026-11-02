@@ -1,0 +1,219 @@
+{
+ "video": "pilot_2026-10-28_fed",
+ "checked_on": "2026-11-02",
+ "sources": {
+  "data_paxg": {
+   "type": "market data",
+   "what": "PAXG-USD hourly OHLC (tokenised gold; spot-gold proxy, tracks XAU/USD within ~0.1\u20130.3%)",
+   "publisher": "Coinbase Exchange public API",
+   "url": "https://api.exchange.coinbase.com/products/PAXG-USD/candles?granularity=3600",
+   "data_timestamp": "candles to 2026-10-28T10:00Z (as-of for this video)",
+   "fetched": "2026-11-02T00:33Z",
+   "rights": "public market data; chart rendered by us",
+   "facts": {
+    "high_2026-10-28T00:00": 4070.4,
+    "close_2026-10-16T20:00": 4166.02,
+    "close_2026-10-23T20:00": 4001.57,
+    "weekly_change_pct": -3.9
+   }
+  },
+  "analysis": {
+   "type": "own analysis",
+   "what": "Jacob's analysis text (28 Oct 2026): entries, levels, probabilities, scenarios, triggers, invalidation",
+   "rights": "own"
+  },
+  "fed_sept": {
+   "type": "official",
+   "publisher": "Federal Reserve",
+   "title": "Federal Reserve Issues FOMC Statement",
+   "date": "2026-09-16",
+   "url": "https://federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+   "facts": {
+    "range": "3.75\u20134.00%",
+    "hike_bp": 25
+   },
+   "verdict": "VERIFIED"
+  },
+  "reuters_poll": {
+   "type": "news",
+   "publisher": "Reuters via Kitco",
+   "title": "Fed to skip October but raise rates again in December, nearly all economists say",
+   "date": "2026-10-20",
+   "url": "https://www.kitco.com/news/off-the-wire/2026-10-20/fed-skip-october-raise-rates-again-december-nearly-all-economists-say",
+   "facts": {
+    "no_change": "94/100",
+    "dec_hike": "100/100"
+   },
+   "verdict": "VERIFIED"
+  },
+  "cme_fedwatch": {
+   "type": "news (market pricing)",
+   "publisher": "Kiplinger live blog (CME FedWatch)",
+   "title": "October Fed Meeting: Updates and Commentary",
+   "date": "2026-10-27T20:06Z",
+   "url": "https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-october-2026",
+   "facts": {
+    "hold": "92.8%",
+    "dec_hike_reuters_1028": "83%",
+    "oct_hike_coingabbar_1028": "9.4%"
+   },
+   "verdict": "PARTLY",
+   "note": "6.6% (Oct hike) and 84.4% (Dec hike) not found in any source; closest: 9.4% hike (28 Oct, CoinGabbar), 83% Dec hike (Reuters via Kitco, 28 Oct)."
+  },
+  "pred_markets": {
+   "type": "news (market pricing)",
+   "publisher": "CoinGabbar (Polymarket); Kalshi News",
+   "date": "2026-10-28 / 2026-10-27",
+   "url": "https://www.coingabbar.com/en/polymarket-news-today-fed-rate-decision-october-crypto-impact ; https://news.kalshi.com/p/interest-rate-odds-fed-october-2026",
+   "facts": {
+    "polymarket_hold": "94.8%",
+    "polymarket_hike": "4.7%",
+    "kalshi_hold": "93%",
+    "kalshi_hike": "6%"
+   },
+   "verdict": "PARTLY"
+  },
+  "cpi_sept": {
+   "type": "news (official data)",
+   "publisher": "Euronews (AP)",
+   "title": "What to expect from the Fed as Warsh weighs hot inflation, oil and US midterms",
+   "date": "2026-10-27",
+   "url": "https://www.euronews.com/2026/10/27/what-to-expect-from-the-fed-as-warsh-weighs-hot-inflation-oil-and-us-midterms",
+   "facts": {
+    "cpi_yoy": "3.7%"
+   },
+   "verdict": "VERIFIED"
+  },
+  "nfp_sept": {
+   "type": "news (official data)",
+   "publisher": "Euronews (AP)",
+   "date": "2026-10-27",
+   "url": "https://www.euronews.com/2026/10/27/what-to-expect-from-the-fed-as-warsh-weighs-hot-inflation-oil-and-us-midterms",
+   "facts": {
+    "payrolls": "+29,000"
+   },
+   "verdict": "VERIFIED"
+  },
+  "spread_1027": {
+   "type": "market data",
+   "what": "10y\u20132y Treasury spread on 27 Oct 2026",
+   "url": "https://fred.stlouisfed.org/series/T10Y2Y",
+   "facts": {
+    "spread": "0.29"
+   },
+   "verdict": "NOT FOUND",
+   "note": "FRED / Treasury not reachable from the workspace; value from the analysis, unverified."
+  },
+  "midterms": {
+   "type": "news",
+   "publisher": "Khaleej Times",
+   "date": "2026-10-19",
+   "url": "https://www.khaleejtimes.com/world/americas/us-midterm-elections-2026-voting-explainer",
+   "facts": {
+    "date": "3 Nov 2026"
+   },
+   "verdict": "VERIFIED"
+  },
+  "commerzbank": {
+   "type": "news (bank research quoted)",
+   "publisher": "Mitrade (wire)",
+   "title": "Gold: Under pressure despite lower real yields \u2013 Commerzbank",
+   "date": "2026-10-27",
+   "url": "https://www.mitrade.com/insights/news/live-news/article-2-2198040-20261027",
+   "verdict": "VERIFIED"
+  },
+  "warsh_style": {
+   "type": "news",
+   "publisher": "StoneX; Yahoo Finance",
+   "date": "2026-10-27; 2026-07-29",
+   "url": "https://www.stonex.com/en-gb/news-and-analysis/fomc-meeting-preview-is-warsh-even-capable-of-delivering-a-hawkish-hold-2026-10-27/ ; https://finance.yahoo.com/economy/live/fed-meeting-live-federal-reserve-july-interest-rate-decision-141813444.html",
+   "verdict": "PARTLY",
+   "note": "'family fight' said at 29 Jul press conference ('I asked for a good family fight'); 'healthy' not found."
+  },
+  "fomc_june_july": {
+   "type": "news",
+   "publisher": "Reuters via Kitco; AP via Star-Advertiser",
+   "date": "2026-06-17; 2026-07-29",
+   "url": "https://www.kitco.com/news/off-the-wire/2026-06-17/nearly-half-fed-policymakers-see-2026-rate-hike-cards ; https://www.staradvertiser.com/2026/07/29/breaking-news/fed-holds-rates-steady-as-3-policymakers-dissent-in-favor-of-hike/",
+   "facts": {
+    "june": "9 of 19",
+    "july_dissents": 3
+   },
+   "verdict": "VERIFIED"
+  },
+  "oil_houthi": {
+   "type": "news",
+   "publisher": "Express Tribune (Reuters)",
+   "title": "Oil prices rise as attack on Saudi refinery reignites supply concerns",
+   "date": "2026-10-28",
+   "url": "https://tribune.com.pk/story/2637351/oil-prices-rise-as-attack-on-saudi-refinery-reignites-supply-concerns",
+   "facts": {
+    "brent": "$115.36 (+1.3%)"
+   },
+   "verdict": "VERIFIED"
+  },
+  "metals_1027": {
+   "type": "news",
+   "publisher": "QNA (Reuters)",
+   "title": "Gold Eases on Firmer Dollar Ahead of Fed Meeting",
+   "date": "2026-10-27",
+   "url": "https://qna.org.qa/en/News-Area/News/2026-10/27/gold-eases-on-firmer-dollar-ahead-of-fed-meeting",
+   "verdict": "CONTRADICTED",
+   "note": "On 27 Oct silver +0.1%, platinum steady; 'metals fell harder than gold' matches 28 Jul, not 27 Oct."
+  },
+  "kiplinger": {
+   "type": "news",
+   "publisher": "Kiplinger",
+   "date": "2026-10-27T20:34Z",
+   "url": "https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-october-2026",
+   "facts": {
+    "hike_headline_range": "7\u201310% (90.6% hold \u2192 9.4% hike)"
+   },
+   "verdict": "VERIFIED"
+  },
+  "headlines": {
+   "type": "headlines quoted as published",
+   "items": [
+    {
+     "headline": "What to expect from the Fed as Warsh weighs hot inflation, oil and US midterms",
+     "publisher": "Euronews",
+     "date": "2026-10-27",
+     "url": "https://www.euronews.com/2026/10/27/what-to-expect-from-the-fed-as-warsh-weighs-hot-inflation-oil-and-us-midterms"
+    },
+    {
+     "headline": "FOMC Meeting Preview: Is Warsh Even Capable of Delivering a Hawkish Hold?",
+     "publisher": "StoneX",
+     "date": "2026-10-27",
+     "url": "https://www.stonex.com/en-gb/news-and-analysis/fomc-meeting-preview-is-warsh-even-capable-of-delivering-a-hawkish-hold-2026-10-27/"
+    },
+    {
+     "headline": "Gold slips on higher oil prices ahead of Fed decision",
+     "publisher": "Kitco (Reuters)",
+     "date": "2026-10-28",
+     "url": "https://www.kitco.com/news/off-the-wire/2026-10-28/gold-slips-higher-oil-prices-ahead-fed-decision"
+    }
+   ],
+   "rights": "headline text quoted for news commentary with attribution; no logos or page screenshots reproduced"
+  },
+  "voice": {
+   "type": "audio",
+   "what": "narration, cloned 'Wolf Trader' voice via vidIQ (user's own voice clone)",
+   "rights": "user-owned clone; vidIQ terms"
+  },
+  "music": {
+   "type": "audio",
+   "what": "music bed generated with vidIQ generate_music",
+   "rights": "vidIQ-generated track for the account's use; no copyrighted film score"
+  },
+  "sfx": {
+   "type": "audio",
+   "what": "all sound effects synthesised in code (sfx3.py)",
+   "rights": "original"
+  },
+  "fonts": {
+   "type": "font",
+   "what": "Inter / Inter Display",
+   "rights": "SIL Open Font License"
+  }
+ }
+}

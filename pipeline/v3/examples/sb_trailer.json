@@ -1,0 +1,348 @@
+{
+ "meta": {
+  "id": "pilot_2026-10-28_trailer",
+  "format": "9x16",
+  "brand": "ANONYMOUS WOLF TRADER",
+  "vdate": "FED PREP \u00b7 28 OCT 2026",
+  "candles": "candles_pilot.json",
+  "asof": "2026-10-28T10:00",
+  "audio_profile": "trailer",
+  "tail": 1.2,
+  "voice": "voice_trailer.mp3"
+ },
+ "beats": [
+  {
+   "id": "T1",
+   "sents": [
+    0,
+    1
+   ],
+   "kind": "observation",
+   "storyboard": "Immediate visual hook: candles race in, the zone lights up exactly as price touches it.",
+   "visual": {
+    "template": "chart",
+    "headline": "Gold pulled back exactly into our zone",
+    "title": "GOLD \u00b7 23\u201328 OCT",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-23T00:00",
+      "to": "2026-10-28T10:00"
+     }
+    ],
+    "reveal": {
+     "from": "2026-10-23T00:00",
+     "until": "2026-10-28T10:00",
+     "at": 0.0,
+     "dur": 3.4
+    },
+    "items": [
+     {
+      "type": "zone",
+      "p1": 4050,
+      "p2": 4070,
+      "col": "gold",
+      "label": "OUR ZONE 4,050\u20134,070",
+      "at_sent": 1
+     },
+     {
+      "type": "highlight",
+      "from": "2026-10-28T00:00",
+      "col": "gold",
+      "label": "HIGH 4,070",
+      "at_sent": 1,
+      "at_word": "4070"
+     }
+    ]
+   },
+   "source_text": "PAXG-USD 1h, Coinbase, to 28 Oct 10:00 UTC",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 1,
+     "at_word": "4070"
+    }
+   ]
+  },
+  {
+   "id": "T2",
+   "sents": [
+    2,
+    3
+   ],
+   "kind": "plan",
+   "storyboard": "Entry line drops in; then the event stamp.",
+   "visual": {
+    "template": "chart",
+    "headline": "Short from 4,055 & 4,060. Tonight: the Fed.",
+    "title": "MY TRADE",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-25T00:00",
+      "to": "2026-10-28T10:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "level",
+      "price": 4057.5,
+      "col": "red",
+      "style": "solid",
+      "label": "SHORTS 4,055 & 4,060",
+      "at_sent": 2,
+      "at_word": "4055"
+     }
+    ]
+   },
+   "source_text": "My trade, as stated in my analysis",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 2,
+     "at_word": "4055"
+    },
+    {
+     "cue": "whoosh",
+     "at_sent": 3
+    }
+   ]
+  },
+  {
+   "id": "T3",
+   "sents": [
+    4,
+    6
+   ],
+   "kind": "interpretation",
+   "storyboard": "Brief silence, then the twist lands on a bass hit.",
+   "visual": {
+    "template": "title",
+    "kicker": "WHAT MOST PEOPLE MISS",
+    "lines": [
+     {
+      "t": "The danger is NOT a hawkish Fed.",
+      "at_sent": 5
+     },
+     {
+      "t": "That's already priced.",
+      "col": "muted",
+      "at_sent": 6
+     }
+    ]
+   },
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "silence",
+     "at_sent": 4,
+     "at_word": "most",
+     "dur": 0.7
+    },
+    {
+     "cue": "riser_hit",
+     "at_sent": 5,
+     "at_word": "not",
+     "dur": 1.2
+    }
+   ]
+  },
+  {
+   "id": "T4",
+   "sents": [
+    7,
+    7
+   ],
+   "kind": "interpretation",
+   "storyboard": "The real danger, in red.",
+   "visual": {
+    "template": "title",
+    "lines": [
+     {
+      "t": "The danger: Warsh dodges.",
+      "col": "red",
+      "at_sent": 7,
+      "at_word": "warsh"
+     },
+     {
+      "t": "December hike odds slip.",
+      "col": "red",
+      "at_sent": 7,
+      "at_word": "december"
+     }
+    ]
+   },
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 7,
+     "at_word": "warsh"
+    }
+   ]
+  },
+  {
+   "id": "T5",
+   "sents": [
+    8,
+    9
+   ],
+   "kind": "scenario",
+   "storyboard": "Scenario B drawn in the hatched future region; the exit line is the payoff.",
+   "visual": {
+    "template": "chart",
+    "headline": "Then the shorts get squeezed",
+    "title": "SCENARIO B \u00b7 MY VIEW",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-26T00:00",
+      "to": "2026-10-29T06:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "zone",
+      "p1": 4065,
+      "p2": 4125,
+      "col": "red",
+      "future": true,
+      "label": "SQUEEZE 4,065\u20134,125",
+      "at_sent": 8,
+      "at_word": "4065"
+     },
+     {
+      "type": "scenario",
+      "path": [
+       ["asof", "close"],
+       [
+        "2026-10-28T20:00",
+        4090
+       ],
+       [
+        "2026-10-29T04:00",
+        4115
+       ]
+      ],
+      "col": "red",
+      "label": "B",
+      "at_sent": 8,
+      "at_word": "squeezed"
+     },
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "white",
+      "style": "solid",
+      "label": "MY EXIT \u00b7 4,100",
+      "at_sent": 9,
+      "at_word": "4100"
+     }
+    ]
+   },
+   "source_text": "Right of the line: my scenario, not price action",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 8,
+     "at_word": "4065"
+    },
+    {
+     "cue": "hit",
+     "at_sent": 9,
+     "at_word": "4100"
+    }
+   ]
+  },
+  {
+   "id": "T6",
+   "sents": [
+    10,
+    10
+   ],
+   "kind": "scenario",
+   "storyboard": "The base case drawn as the competing scenario.",
+   "visual": {
+    "template": "chart",
+    "headline": "If he holds and says little",
+    "title": "SCENARIO A \u00b7 MY VIEW",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-26T00:00",
+      "to": "2026-10-29T12:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "scenario",
+      "path": [
+       ["asof", "close"],
+       [
+        "2026-10-28T20:00",
+        4000
+       ],
+       [
+        "2026-10-29T10:00",
+        3975
+       ]
+      ],
+      "col": "green",
+      "label": "RETEST 4,000 \u2192 3,975",
+      "at_sent": 10,
+      "at_word": "retests"
+     },
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "white",
+      "style": "solid",
+      "label": "EXIT 4,100",
+      "at": 0
+     }
+    ]
+   },
+   "source_text": "Right of the line: my scenario, not price action",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 10,
+     "at_word": "retests"
+    }
+   ]
+  },
+  {
+   "id": "T7",
+   "sents": [
+    11,
+    13
+   ],
+   "kind": "plan",
+   "storyboard": "Payoff: the plan + invalidation in one card.",
+   "visual": {
+    "template": "title",
+    "kicker": "MY PLAN",
+    "lines": [
+     {
+      "t": "Stay short until the bounce around 1 November.",
+      "col": "gold",
+      "at_sent": 12
+     },
+     {
+      "t": "Wrong? Out at 4,100.",
+      "col": "white",
+      "at_sent": 12,
+      "at_word": "november"
+     }
+    ]
+   },
+   "source_text": "My own analysis \u2014 not financial advice",
+   "sound": [
+    {
+     "cue": "outro",
+     "at_sent": 13
+    }
+   ]
+  }
+ ]
+}

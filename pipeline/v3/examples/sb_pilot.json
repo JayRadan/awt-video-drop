@@ -1,0 +1,1191 @@
+{
+ "meta": {
+  "id": "pilot_2026-10-28_fed",
+  "format": "16x9",
+  "brand": "ANONYMOUS WOLF TRADER",
+  "vdate": "FED PREP \u00b7 28 OCT 2026",
+  "candles": "candles_pilot.json",
+  "asof": "2026-10-28T10:00",
+  "cta": "HAWKISH HOLD, OR WARSH DODGING?",
+  "audio_profile": "documentary",
+  "tail": 2.5,
+  "voice": "voice_pilot.mp3"
+ },
+ "beats": [
+  {
+   "id": "B01",
+   "sents": [
+    0,
+    1
+   ],
+   "kind": "observation",
+   "storyboard": "Hook. Open on the real chart of the week; the 4,050\u20134,070 zone we named appears, then the exact candle that reached 4,070.",
+   "visual": {
+    "template": "chart",
+    "title": "GOLD \u00b7 THE PULLBACK WE SAID TO WAIT FOR",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-20T00:00",
+      "to": "2026-10-28T10:00"
+     }
+    ],
+    "reveal": {
+     "from": "2026-10-20T00:00",
+     "until": "2026-10-28T10:00",
+     "at": 0.0,
+     "dur": 2.2
+    },
+    "items": [
+     {
+      "type": "zone",
+      "p1": 4050,
+      "p2": 4070,
+      "col": "gold",
+      "label": "OUR PULLBACK ZONE \u00b7 4,050\u20134,070 SPOT",
+      "at_sent": 1,
+      "at_word": "4050"
+     },
+     {
+      "type": "highlight",
+      "from": "2026-10-28T00:00",
+      "col": "gold",
+      "label": "HIGH 4,070 \u00b7 28 OCT 00:00 UTC",
+      "at_sent": 1,
+      "at_word": "spot"
+     }
+    ]
+   },
+   "source_ids": [
+    "data_paxg"
+   ],
+   "source_text": "PAXG-USD hourly candles, Coinbase Exchange (spot-gold proxy), to 28 Oct 2026 10:00 UTC.",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 1,
+     "at_word": "4050"
+    }
+   ]
+  },
+  {
+   "id": "B02",
+   "sents": [
+    2,
+    6
+   ],
+   "kind": "plan",
+   "storyboard": "The trade: entry levels drawn on the same chart; Fed timing as headline.",
+   "visual": {
+    "template": "chart",
+    "title": "MY TRADE INTO THE FED",
+    "headline": "Yesterday we got it \u2014 two core shorts. Tonight the Fed decides.",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-22T00:00",
+      "to": "2026-10-28T10:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "zone",
+      "p1": 4050,
+      "p2": 4070,
+      "col": "gold",
+      "at": 0
+     },
+     {
+      "type": "level",
+      "price": 4057.5,
+      "col": "red",
+      "style": "solid",
+      "label": "TWO CORE SHORTS \u00b7 4,055 & 4,060 SPOT",
+      "at_sent": 6,
+      "at_word": "4055"
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "Entry levels: my own trade, as stated in this analysis.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 6,
+     "at_word": "4055"
+    }
+   ]
+  },
+  {
+   "id": "B03",
+   "sents": [
+    7,
+    14
+   ],
+   "kind": "interpretation",
+   "storyboard": "Simple moment: bottom line in three short lines, no chart.",
+   "visual": {
+    "template": "title",
+    "kicker": "BOTTOM LINE FIRST",
+    "lines": [
+     {
+      "t": "Base case: a hawkish hold \u2014 about 90% priced in.",
+      "at_sent": 9
+     },
+     {
+      "t": "The danger: Warsh dodges and December hike odds slip.",
+      "col": "red",
+      "at_sent": 10
+     },
+     {
+      "t": "Our edge: the trend \u2014 positioning, oil, the dollar.",
+      "col": "gold",
+      "at_sent": 12
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "",
+   "sound": []
+  },
+  {
+   "id": "B04",
+   "sents": [
+    15,
+    16
+   ],
+   "kind": "data",
+   "storyboard": "One number: where the policy rate is.",
+   "visual": {
+    "template": "stat",
+    "title": "THE FACTS ON THE TABLE",
+    "items": [
+     {
+      "label": "Fed funds target range after the September hike",
+      "value": "3.75\u20134.00%",
+      "col": "white",
+      "sub": "+25 bp in September 2026 \u2014 the first hike since 2023",
+      "at_sent": 16,
+      "at_word": "375"
+     }
+    ]
+   },
+   "source_ids": [
+    "fed_sept"
+   ],
+   "source_text": "Federal Reserve FOMC statement, 16 Sep 2026.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 16,
+     "at_word": "375"
+    }
+   ]
+  },
+  {
+   "id": "B05",
+   "sents": [
+    17,
+    20
+   ],
+   "kind": "data",
+   "storyboard": "Three market-pricing numbers revealed as spoken.",
+   "visual": {
+    "template": "stat",
+    "items": [
+     {
+      "label": "Economists expecting no change today (Reuters poll, 16\u201320 Oct)",
+      "value": "94/100",
+      "col": "white",
+      "sub": "All 100 forecast a December hike",
+      "at_sent": 17,
+      "at_word": "94"
+     },
+     {
+      "label": "Hold tonight \u00b7 CME FedWatch, 27 Oct",
+      "value": "92.8%",
+      "col": "gold",
+      "sub": "Polymarket 28 Oct: hold 94.8%, hike 4.7% \u00b7 Kalshi 27 Oct: hold 93%",
+      "at_sent": 18,
+      "at_word": "928"
+     },
+     {
+      "label": "December hike \u00b7 CME FedWatch (as cited)",
+      "value": "84.4%",
+      "col": "red",
+      "flag": "UNVERIFIED",
+      "sub": "Closest sourced print: 83% (Reuters, 28 Oct). Oct hike 6.6% also unverified.",
+      "at_sent": 18,
+      "at_word": "844"
+     }
+    ]
+   },
+   "source_ids": [
+    "reuters_poll",
+    "cme_fedwatch",
+    "pred_markets"
+   ],
+   "source_text": "Reuters poll via Kitco (20 Oct 2026); CME FedWatch via Kiplinger live blog (27 Oct, 20:06 UTC); CoinGabbar/Polymarket (28 Oct); Kalshi News (27 Oct).",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 17,
+     "at_word": "94"
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 18,
+     "at_word": "928"
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 18,
+     "at_word": "844"
+    }
+   ]
+  },
+  {
+   "id": "B06",
+   "sents": [
+    21,
+    23
+   ],
+   "kind": "data",
+   "storyboard": "The conflict: two numbers side by side, inflation vs jobs.",
+   "visual": {
+    "template": "stat",
+    "title": "BUT THE DATA CONFLICT",
+    "items": [
+     {
+      "label": "US CPI, September 2026, y/y",
+      "value": "3.7%",
+      "col": "red",
+      "sub": "Higher prices support more tightening",
+      "at_sent": 22,
+      "at_word": "37"
+     },
+     {
+      "label": "Nonfarm payrolls, September 2026",
+      "value": "+29K",
+      "col": "cyan",
+      "sub": "Weaker hiring is a reason to wait",
+      "at_sent": 22,
+      "at_word": "29000"
+     }
+    ]
+   },
+   "source_ids": [
+    "cpi_sept",
+    "nfp_sept"
+   ],
+   "source_text": "US CPI and payrolls for September 2026, as reported by Euronews/AP, 27 Oct 2026.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 22,
+     "at_word": "37"
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 22,
+     "at_word": "29000"
+    }
+   ]
+  },
+  {
+   "id": "B07",
+   "sents": [
+    24,
+    25
+   ],
+   "kind": "data",
+   "storyboard": "One number + my read of it, labelled as interpretation in the sub-line.",
+   "visual": {
+    "template": "stat",
+    "items": [
+     {
+      "label": "10-year minus 2-year Treasury spread, 27 Oct 2026",
+      "value": "0.29",
+      "col": "gold",
+      "sub": "Percentage points. My read: the bond market is quietly voting \u201cpolicy-error risk\u201d.",
+      "at_sent": 24,
+      "at_word": "029",
+      "flag": "UNVERIFIED"
+     }
+    ]
+   },
+   "source_ids": [
+    "spread_1027"
+   ],
+   "source_text": "10y\u20132y spread: figure from the analysis \u2014 FRED/Treasury data not reachable to verify.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 24,
+     "at_word": "029"
+    }
+   ]
+  },
+  {
+   "id": "B08",
+   "sents": [
+    26,
+    28
+   ],
+   "kind": "context",
+   "storyboard": "Real headlines from the day before the decision (publisher + date), the political backdrop.",
+   "visual": {
+    "template": "headline",
+    "title": "IN THE NEWS \u00b7 MIDTERMS ON 3 NOV, NO NEW PROJECTIONS TONIGHT",
+    "items": [
+     {
+      "publisher": "Euronews",
+      "date": "27 Oct 2026",
+      "headline": "What to expect from the Fed as Warsh weighs hot inflation, oil and US midterms",
+      "url_short": "euronews.com",
+      "at_sent": 26
+     },
+     {
+      "publisher": "StoneX",
+      "date": "27 Oct 2026",
+      "headline": "FOMC Meeting Preview: Is Warsh Even Capable of Delivering a Hawkish Hold?",
+      "url_short": "stonex.com",
+      "at_sent": 27
+     },
+     {
+      "publisher": "Kitco (Reuters)",
+      "date": "28 Oct 2026",
+      "headline": "Gold slips on higher oil prices ahead of Fed decision",
+      "url_short": "kitco.com",
+      "at_sent": 28
+     }
+    ]
+   },
+   "source_ids": [
+    "headlines"
+   ],
+   "source_text": "Headlines quoted as published; links in the description.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 27
+    }
+   ]
+  },
+  {
+   "id": "B09",
+   "sents": [
+    29,
+    33
+   ],
+   "kind": "observation",
+   "storyboard": "The dog that didn't bark: measure last week's fall on real candles (Fri 16 Oct close \u2192 Fri 23 Oct close), computed from data.",
+   "visual": {
+    "template": "chart",
+    "title": "LAST WEEK: GOLD FELL ANYWAY",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-15T00:00",
+      "to": "2026-10-28T10:00"
+     },
+     {
+      "at": 2.5,
+      "from": "2026-10-15T00:00",
+      "to": "2026-10-24T12:00",
+      "dur": 1.6
+     }
+    ],
+    "items": [
+     {
+      "type": "highlight",
+      "from": "2026-10-16T20:00",
+      "col": "white",
+      "label": "FRI 16 OCT CLOSE",
+      "at_sent": 32
+     },
+     {
+      "type": "highlight",
+      "from": "2026-10-23T20:00",
+      "col": "white",
+      "label": "FRI 23 OCT CLOSE",
+      "label_pos": "below",
+      "at_sent": 32,
+      "at_word": "4"
+     },
+     {
+      "type": "measure",
+      "a": {
+       "t": "2026-10-16T20:00",
+       "f": "c"
+      },
+      "b": {
+       "t": "2026-10-23T20:00",
+       "f": "c"
+      },
+      "col": "red",
+      "at_sent": 32,
+      "at_word": "percent",
+      "dur": 1.0
+     }
+    ]
+   },
+   "source_ids": [
+    "data_paxg",
+    "commerzbank"
+   ],
+   "source_text": "PAXG-USD hourly closes, Coinbase Exchange. Rate expectations easing while gold fell: Commerzbank via Mitrade, 27 Oct 2026.",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 32,
+     "at_word": "percent"
+    }
+   ]
+  },
+  {
+   "id": "B10",
+   "sents": [
+    34,
+    39
+   ],
+   "kind": "interpretation",
+   "storyboard": "My deduction as a cause\u2192effect chain; each box lands on its sentence.",
+   "visual": {
+    "template": "mechanism",
+    "title": "MY DEDUCTION: LIQUIDATION, NOT THE FED",
+    "items": [
+     {
+      "t": "Sold on liquidation + a strong dollar",
+      "sub": "not on Fed hawkishness",
+      "col": "gold",
+      "at_sent": 35
+     },
+     {
+      "t": "New shorts from big speculators",
+      "sub": "some took profit near 4,000 \u2014 most still open",
+      "col": "white",
+      "at_sent": 36
+     },
+     {
+      "t": "Silver, platinum, palladium fell harder",
+      "sub": "Sources: flat on 27 Oct (that move was 28 Jul)",
+      "col": "red",
+      "at_sent": 38,
+      "flag": "CONTRADICTED"
+     },
+     {
+      "t": "A liquidation signature",
+      "sub": "forced sellers don't care what Warsh says",
+      "col": "gold",
+      "at_sent": 39
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis",
+    "metals_1027"
+   ],
+   "source_text": "Deduction: my analysis. Metals on 27 Oct: QNA/Reuters, 27 Oct 2026 (contradicts the claim).",
+   "sound": []
+  },
+  {
+   "id": "B11",
+   "sents": [
+    40,
+    47
+   ],
+   "kind": "interpretation",
+   "storyboard": "Three numbered implications; build one by one.",
+   "visual": {
+    "template": "list",
+    "title": "WHAT DOES THAT MEAN?",
+    "items": [
+     {
+      "t": "A hawkish Fed confirms what's priced",
+      "sub": "a small extra move down for gold",
+      "at_sent": 42
+     },
+     {
+      "t": "A less hawkish Fed contradicts the price",
+      "sub": "a larger move up \u2014 open shorts get squeezed",
+      "col": "red",
+      "at_sent": 44
+     },
+     {
+      "t": "The real driver: oil \u2192 inflation \u2192 December odds",
+      "sub": "lower oil = fewer hike bets = a better day for gold",
+      "col": "gold",
+      "at_sent": 46
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "",
+   "sound": []
+  },
+  {
+   "id": "B12",
+   "sents": [
+    48,
+    55
+   ],
+   "kind": "interpretation",
+   "storyboard": "Oil + Commerzbank framing + the November bounce, as a list; quote attributed.",
+   "visual": {
+    "template": "list",
+    "title": "WHY THE SHORT STILL WORKS",
+    "items": [
+     {
+      "t": "Oil rising again on a Houthi refinery claim",
+      "sub": "Brent +1.3% to $115.36 on 28 Oct \u2014 on our side",
+      "col": "red",
+      "at_sent": 48
+     },
+     {
+      "t": "Commerzbank: the bar for a dovish surprise has risen",
+      "sub": "a hawkish surprise is easier \u2014 but its reaction is smaller",
+      "col": "white",
+      "at_sent": 50
+     },
+     {
+      "t": "The bounce comes around 1 November",
+      "sub": "until then, we stay on our shorts",
+      "col": "gold",
+      "at_sent": 54
+     }
+    ]
+   },
+   "source_ids": [
+    "oil_houthi",
+    "commerzbank",
+    "analysis"
+   ],
+   "source_text": "Oil: Reuters via Express Tribune, 28 Oct 2026. Commerzbank via Mitrade, 27 Oct 2026.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 54
+    }
+   ]
+  },
+  {
+   "id": "B13",
+   "sents": [
+    56,
+    62
+   ],
+   "kind": "interpretation",
+   "storyboard": "Game theory: the four players as boxes.",
+   "visual": {
+    "template": "mechanism",
+    "title": "GAME THEORY: WARSH'S DECISION PROBLEM",
+    "items": [
+     {
+      "t": "Warsh",
+      "sub": "Trump-appointed chair, 6 days before the midterms",
+      "col": "gold",
+      "at_sent": 59
+     },
+     {
+      "t": "The hawkish committee",
+      "col": "red",
+      "at_sent": 60
+     },
+     {
+      "t": "The market",
+      "col": "white",
+      "at_sent": 61
+     },
+     {
+      "t": "The White House",
+      "col": "white",
+      "at_sent": 62
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "",
+   "sound": []
+  },
+  {
+   "id": "B14",
+   "sents": [
+    63,
+    67
+   ],
+   "kind": "context",
+   "storyboard": "How each side has played so far (sourced behaviour).",
+   "visual": {
+    "template": "compare",
+    "title": "HOW THEY HAVE PLAYED SO FAR",
+    "left_head": "PLAYER",
+    "right_head": "TRACK RECORD",
+    "rows": [
+     {
+      "left": "Warsh: minimal commitment",
+      "right": "Shortened statements, less forward guidance, evasive answers; on 3 dissents in July: \u201cI asked for a good family fight\u201d",
+      "col": "gold",
+      "mark": "",
+      "at_sent": 63,
+      "at2_sent": 64
+     },
+     {
+      "left": "The committee: hawkish",
+      "right": "About half pencilled in 2026 hikes in June; three presidents dissented for a hike in July",
+      "col": "red",
+      "mark": "",
+      "at_sent": 66,
+      "at2_sent": 67
+     }
+    ]
+   },
+   "source_ids": [
+    "warsh_style",
+    "fomc_june_july"
+   ],
+   "source_text": "StoneX preview, 27 Oct 2026; Yahoo Finance live, 29 Jul 2026; Reuters via Kitco, 17 Jun 2026 (9 of 19); AP, 29 Jul 2026.",
+   "sound": []
+  },
+  {
+   "id": "B15",
+   "sents": [
+    68,
+    76
+   ],
+   "kind": "interpretation",
+   "storyboard": "His options with verdicts; the equilibrium lands green.",
+   "visual": {
+    "template": "compare",
+    "title": "SO WHAT ARE HIS OPTIONS?",
+    "left_head": "OPTION",
+    "right_head": "MY VERDICT",
+    "rows": [
+     {
+      "left": "Hold + clearly signal December",
+      "right": "He hates forward guidance",
+      "col": "red",
+      "mark": "\u2717",
+      "at_sent": 69,
+      "at2_sent": 70
+     },
+     {
+      "left": "Hold + dovish framing",
+      "right": "Contradicts 3.7% inflation",
+      "col": "red",
+      "mark": "\u2717",
+      "at_sent": 71,
+      "at2_sent": 72
+     },
+     {
+      "left": "Surprise hike",
+      "right": "High political cost, not telegraphed",
+      "col": "red",
+      "mark": "\u2717",
+      "at_sent": 73,
+      "at2_sent": 74
+     },
+     {
+      "left": "Hold, say little, let 1\u20133 hawkish dissents talk",
+      "right": "The equilibrium",
+      "col": "green",
+      "mark": "\u2713",
+      "at_sent": 75,
+      "at2_sent": 76
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 76
+    }
+   ]
+  },
+  {
+   "id": "B16",
+   "sents": [
+    77,
+    82
+   ],
+   "kind": "interpretation",
+   "storyboard": "Hike tail: my estimate vs the headline; then the hidden player.",
+   "visual": {
+    "template": "stat",
+    "title": "THE HIKE TAIL IS THINNER",
+    "items": [
+     {
+      "label": "Headline hike odds",
+      "value": "7\u201310%",
+      "col": "muted",
+      "sub": "CME FedWatch prints 27\u201328 Oct: ~6\u20139%",
+      "at_sent": 79
+     },
+     {
+      "label": "My estimate",
+      "value": "3\u20135%",
+      "col": "gold",
+      "sub": "no voting member prepared markets for a hike",
+      "at_sent": 79,
+      "at_word": "maybe"
+     },
+     {
+      "label": "Hidden second player",
+      "value": "The White House",
+      "col": "red",
+      "sub": "pressure to cut makes the ambiguous scenario more likely",
+      "at_sent": 80
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis",
+    "kiplinger"
+   ],
+   "source_text": "Headline odds: Kiplinger/CME FedWatch 27 Oct, CoinGabbar 28 Oct. My estimate and the 'no one prepared markets' point: my analysis; same view quoted by Kiplinger, 27 Oct.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 79,
+     "at_word": "maybe"
+    }
+   ]
+  },
+  {
+   "id": "B17",
+   "sents": [
+    83,
+    88
+   ],
+   "kind": "scenario",
+   "storyboard": "Scenario tree overview with my probabilities; focus A.",
+   "visual": {
+    "template": "scenarios",
+    "title": "MY SCENARIO TREE",
+    "rows": [
+     {
+      "id": "A",
+      "name": "Hawkish hold",
+      "p": 0.5,
+      "col": "green",
+      "outcome": "2\u20133 hike dissents \u00b7 Dec odds stay 80\u201390% \u00b7 gold \u22120.5% to \u22121.5%",
+      "at_sent": 85,
+      "focus_sents": [
+       85,
+       88
+      ]
+     },
+     {
+      "id": "B",
+      "name": "Ambiguous hold",
+      "p": 0.3,
+      "col": "red",
+      "outcome": "Warsh dodges \u00b7 Dec odds 65\u201375% \u00b7 gold +1% to +2%",
+      "at": 1.0,
+      "focus_sents": [
+       91,
+       96
+      ]
+     },
+     {
+      "id": "C",
+      "name": "Surprise hike",
+      "p": 0.05,
+      "col": "gold",
+      "outcome": "\u22122% to \u22123% knee-jerk, then possible reversal",
+      "at": 1.4,
+      "focus_sents": [
+       97,
+       100
+      ]
+     },
+     {
+      "id": "D",
+      "name": "Dovish hold",
+      "p": 0.05,
+      "col": "red",
+      "outcome": "Dec odds below 60% \u00b7 gold +2% to +3%",
+      "at": 1.8,
+      "focus_sents": [
+       101,
+       104
+      ]
+     },
+     {
+      "id": "E",
+      "name": "Non-event",
+      "p": 0.1,
+      "col": "white",
+      "outcome": "\u00b10.5% \u00b7 Thursday takes over",
+      "at": 2.2,
+      "focus_sents": [
+       105,
+       107
+      ]
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My own probability estimates \u2014 not market prices.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 85
+    }
+   ]
+  },
+  {
+   "id": "B18",
+   "sents": [
+    89,
+    96
+   ],
+   "kind": "scenario",
+   "storyboard": "The two main scenarios drawn separately in the hatched future region of the real chart: A down to 4,000 then 3,975; B squeeze into 4,065\u20134,125.",
+   "visual": {
+    "template": "chart",
+    "title": "SCENARIO A vs SCENARIO B \u00b7 NEXT 24 HOURS",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-25T00:00",
+      "to": "2026-10-29T12:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "white",
+      "style": "solid",
+      "label": "MY EXIT \u00b7 4,100 SPOT",
+      "at": 0.2
+     },
+     {
+      "type": "scenario",
+      "path": [
+       [
+        "asof",
+        "close"
+       ],
+       [
+        "2026-10-28T20:00",
+        4000
+       ],
+       [
+        "2026-10-29T10:00",
+        3975
+       ]
+      ],
+      "col": "green",
+      "label": "A \u00b7 RETEST 4,000 \u2192 3,975",
+      "at_sent": 89,
+      "at_word": "retests"
+     },
+     {
+      "type": "zone",
+      "p1": 4065,
+      "p2": 4125,
+      "col": "red",
+      "label": "B \u00b7 SQUEEZE ZONE 4,065\u20134,125",
+      "at_sent": 95,
+      "at_word": "squeezes",
+      "future": true
+     },
+     {
+      "type": "scenario",
+      "path": [
+       [
+        "asof",
+        "close"
+       ],
+       [
+        "2026-10-28T20:00",
+        4095
+       ],
+       [
+        "2026-10-29T10:00",
+        4110
+       ]
+      ],
+      "col": "red",
+      "label": "B \u00b7 AMBIGUOUS HOLD",
+      "label_below": false,
+      "at_sent": 95,
+      "at_word": "squeezes"
+     }
+    ]
+   },
+   "source_ids": [
+    "data_paxg",
+    "analysis"
+   ],
+   "source_text": "Real candles to 28 Oct 10:00 UTC (PAXG-USD, Coinbase). Paths to the right are my scenarios, not price action.",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 89,
+     "at_word": "retests"
+    },
+    {
+     "cue": "hit",
+     "at_sent": 96
+    }
+   ]
+  },
+  {
+   "id": "B19",
+   "sents": [
+    97,
+    107
+   ],
+   "kind": "scenario",
+   "storyboard": "Back to the tree; focus moves C \u2192 D \u2192 E as spoken.",
+   "visual": {
+    "template": "scenarios",
+    "title": "THE TAIL SCENARIOS",
+    "rows": [
+     {
+      "id": "A",
+      "name": "Hawkish hold",
+      "p": 0.5,
+      "col": "green",
+      "outcome": "2\u20133 hike dissents \u00b7 Dec odds stay 80\u201390% \u00b7 gold \u22120.5% to \u22121.5%",
+      "at": 0,
+      "focus_sents": [
+       0,
+       0
+      ]
+     },
+     {
+      "id": "B",
+      "name": "Ambiguous hold",
+      "p": 0.3,
+      "col": "red",
+      "outcome": "Warsh dodges \u00b7 Dec odds 65\u201375% \u00b7 gold +1% to +2%",
+      "at": 0,
+      "focus_sents": [
+       0,
+       0
+      ]
+     },
+     {
+      "id": "C",
+      "name": "Surprise hike",
+      "p": 0.05,
+      "col": "gold",
+      "outcome": "to 4.00\u20134.25% \u00b7 \u22122% to \u22123% toward 3,940 / 3,900, then a possible reversal",
+      "at": 0,
+      "focus_sents": [
+       97,
+       100
+      ]
+     },
+     {
+      "id": "D",
+      "name": "Dovish hold",
+      "p": 0.05,
+      "col": "red",
+      "outcome": "Dec odds below 60% \u00b7 gold +2% to +3% to 4,125\u20134,150",
+      "at": 0,
+      "focus_sents": [
+       101,
+       104
+      ]
+     },
+     {
+      "id": "E",
+      "name": "Non-event",
+      "p": 0.1,
+      "col": "white",
+      "outcome": "\u00b10.5% \u00b7 Thursday takes over",
+      "at": 0,
+      "focus_sents": [
+       105,
+       107
+      ]
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My own probability estimates \u2014 not market prices.",
+   "sound": []
+  },
+  {
+   "id": "B20",
+   "sents": [
+    108,
+    113
+   ],
+   "kind": "plan",
+   "storyboard": "The plan on the chart: entries, exit, hedging trigger; projected break drawn as scenario.",
+   "visual": {
+    "template": "chart",
+    "title": "THE PLAN",
+    "headline": "Stay short until the bounce around 1 Nov. Wrong? Close at 4,100 spot.",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-10-24T00:00",
+      "to": "2026-10-30T00:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "level",
+      "price": 4057.5,
+      "col": "red",
+      "style": "solid",
+      "label": "SHORTS \u00b7 4,055 & 4,060",
+      "at": 0.3
+     },
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "white",
+      "style": "solid",
+      "label": "EXIT IF WRONG \u00b7 4,100",
+      "at_sent": 109,
+      "at_word": "4100"
+     },
+     {
+      "type": "level",
+      "price": 4015,
+      "col": "gold",
+      "label": "HEDGING ACCELERATES \u00b7 4,015 SPOT",
+      "at_sent": 113,
+      "at_word": "4015"
+     },
+     {
+      "type": "scenario",
+      "path": [
+       [
+        "asof",
+        "close"
+       ],
+       [
+        "2026-10-28T22:00",
+        4015
+       ],
+       [
+        "2026-10-29T16:00",
+        3940
+       ]
+      ],
+      "col": "cyan",
+      "label": "SHARP BREAK TOWARD ~3,940 \u00b7 MY VIEW",
+      "at_sent": 113,
+      "at_word": "3940"
+     },
+     {
+      "type": "note",
+      "text": "4,000 = put-heavy strike on DECEMBER GOLD FUTURES (not spot)",
+      "col": "muted",
+      "at_sent": 112
+     }
+    ]
+   },
+   "source_ids": [
+    "data_paxg",
+    "analysis"
+   ],
+   "source_text": "Real candles to 28 Oct 10:00 UTC (PAXG-USD, Coinbase). Levels and path: my plan and view.",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 109,
+     "at_word": "4100"
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 113,
+     "at_word": "3940"
+    }
+   ]
+  },
+  {
+   "id": "B21",
+   "sents": [
+    114,
+    117
+   ],
+   "kind": "plan",
+   "storyboard": "Triggers and invalidation, two columns + red bar.",
+   "visual": {
+    "template": "triggers",
+    "title": "WHAT WOULD CHANGE MY MIND BEFORE 19:00",
+    "more": [
+     {
+      "t": "Brent still rising at 18:30 Berlin",
+      "at_sent": 115
+     },
+     {
+      "t": "Dollar index holding its two-week high",
+      "at_sent": 115,
+      "at_word": "dollar"
+     },
+     {
+      "t": "Gold failing to reclaim 4,050",
+      "at_sent": 115,
+      "at_word": "gold"
+     }
+    ],
+    "less": [
+     {
+      "t": "Oil reversing lower on Tehran headlines before 19:00",
+      "at_sent": 117
+     },
+     {
+      "t": "Gold grinding above 4,085 into the number (squeeze fuel)",
+      "at_sent": 117,
+      "at_word": "gold"
+     }
+    ],
+    "invalidation": "If today goes against my analysis, I close at 4,100 spot.",
+    "inv_at": 0.5
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "",
+   "sound": []
+  },
+  {
+   "id": "B22",
+   "sents": [
+    118,
+    123
+   ],
+   "kind": null,
+   "storyboard": "Outro with the comment question.",
+   "visual": {
+    "template": "outro",
+    "cta": "Hawkish hold, or Warsh dodging?"
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "outro",
+     "at": 0.2
+    }
+   ]
+  }
+ ]
+}
