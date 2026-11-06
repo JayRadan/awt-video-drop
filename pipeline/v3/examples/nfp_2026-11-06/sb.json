@@ -1,0 +1,1007 @@
+{
+ "meta": {
+  "id": "update_2026-11-06",
+  "format": "16x9",
+  "brand": "ANONYMOUS WOLF TRADER",
+  "vdate": "GOLD · NFP DAY · 6 NOV 2026",
+  "candles": "candles_v.json",
+  "asof": "2026-11-06T09:00",
+  "audio_profile": "energetic",
+  "tail": 2.5,
+  "voice": "voice.mp3"
+ },
+ "beats": [
+  {
+   "id": "B01",
+   "sents": [
+    0,
+    5
+   ],
+   "kind": null,
+   "storyboard": "Hook: cut through the noise.",
+   "visual": {
+    "template": "title",
+    "kicker": "NFP DAY · 6 NOV",
+    "lines": [
+     {
+      "t": "Every guru is yelling about it.",
+      "at_sent": 1
+     },
+     {
+      "t": "Don't listen to them.",
+      "col": "gold",
+      "at_sent": 2
+     },
+     {
+      "t": "Don't fall for it.",
+      "col": "muted",
+      "at_sent": 5
+     }
+    ]
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "riser_hit",
+     "at_sent": 2,
+     "dur": 1.0
+    },
+    {
+     "cue": "hit",
+     "at_sent": 5
+    }
+   ]
+  },
+  {
+   "id": "B02",
+   "sents": [
+    6,
+    9
+   ],
+   "kind": "interpretation",
+   "storyboard": "The thesis.",
+   "visual": {
+    "template": "title",
+    "kicker": "THE TRUTH",
+    "lines": [
+     {
+      "t": "Today's NFP is not important.",
+      "at_sent": 7
+     },
+     {
+      "t": "Especially for gold.",
+      "col": "gold",
+      "at_sent": 8
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "silence",
+     "at_sent": 7,
+     "dur": 0.4
+    },
+    {
+     "cue": "hit",
+     "at_sent": 8
+    }
+   ]
+  },
+  {
+   "id": "B03",
+   "sents": [
+    10,
+    13
+   ],
+   "kind": "data",
+   "storyboard": "The global AI rout in numbers.",
+   "visual": {
+    "template": "list",
+    "title": "THE AI SELL-OFF · 5–6 NOV",
+    "items": [
+     {
+      "t": "Nasdaq −5.5%",
+      "sub": "Thursday close",
+      "col": "red",
+      "at_sent": 11,
+      "at_word": "nasdaq"
+     },
+     {
+      "t": "S&P 500 −4.4% · Dow −3.4%",
+      "sub": "Thursday close · record $2.9 trillion lost",
+      "col": "red",
+      "at_sent": 11,
+      "at_word": "dow"
+     },
+     {
+      "t": "Taiwan −8% at one point",
+      "sub": "closed −4.5% · Friday",
+      "col": "red",
+      "at_sent": 12,
+      "at_word": "taiwan"
+     },
+     {
+      "t": "Nikkei −5.7%",
+      "sub": "Friday midday",
+      "col": "red",
+      "at_sent": 12,
+      "at_word": "nikkei"
+     }
+    ]
+   },
+   "source_ids": [
+    "foxbiz",
+    "euronews"
+   ],
+   "source_text": "Fox Business 5 Nov · Euronews 6 Nov 2026",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 11,
+     "at_word": "nasdaq"
+    },
+    {
+     "cue": "hit",
+     "at_sent": 12,
+     "at_word": "taiwan"
+    },
+    {
+     "cue": "riser_hit",
+     "at_sent": 13,
+     "at_word": "huge",
+     "dur": 0.8
+    }
+   ]
+  },
+  {
+   "id": "B04",
+   "sents": [
+    14,
+    21
+   ],
+   "kind": "context",
+   "storyboard": "The trigger headlines.",
+   "visual": {
+    "template": "headline",
+    "title": "THE REASON",
+    "items": [
+     {
+      "publisher": "Fox Business",
+      "date": "5 Nov 2026",
+      "headline": "Stocks plunge as Dem midterm sweep fuels AI regulatory concerns",
+      "url_short": "Some Democrats called for restrictions or pauses on new data center projects",
+      "at_sent": 15
+     },
+     {
+      "publisher": "Al Jazeera",
+      "date": "5 Nov 2026",
+      "headline": "AI stocks plunge after US election, driving down markets",
+      "url_short": "39 of 45 data-centre ballot measures passed restrictions",
+      "at_sent": 17
+     }
+    ]
+   },
+   "source_ids": [
+    "foxbiz",
+    "aljazeera"
+   ],
+   "source_text": "Fox Business · Al Jazeera, 5 Nov 2026",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 15
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 17
+    }
+   ]
+  },
+  {
+   "id": "B05",
+   "sents": [
+    22,
+    22
+   ],
+   "kind": "interpretation",
+   "storyboard": "The chain reaction.",
+   "visual": {
+    "template": "mechanism",
+    "title": "WHY STOCKS CRASHED · MY READ",
+    "items": [
+     {
+      "t": "No more data-center expansion",
+      "col": "white",
+      "at": 0.1
+     },
+     {
+      "t": "Lower AI earnings",
+      "col": "white",
+      "at_sent": 22,
+      "at_word": "leveraged"
+     },
+     {
+      "t": "Leveraged longs force-sold",
+      "col": "red",
+      "at_sent": 22,
+      "at_word": "liquidation"
+     },
+     {
+      "t": "Sharp fall",
+      "col": "red",
+      "at_sent": 22,
+      "at_word": "sharply"
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 22,
+     "at_word": "sharply"
+    }
+   ]
+  },
+  {
+   "id": "B06",
+   "sents": [
+    23,
+    27
+   ],
+   "kind": "observation",
+   "storyboard": "Gold during the crash, measured.",
+   "visual": {
+    "template": "chart",
+    "title": "GOLD · 5 → 6 NOV, HOURLY",
+    "headline": "Why didn't gold crash too?",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-05T00:00",
+      "to": "2026-11-06T09:00"
+     }
+    ],
+    "reveal": {
+     "keys": [
+      {
+       "at": 0,
+       "until": "2026-11-05T14:00"
+      },
+      {
+       "at_sent": 24,
+       "until": "2026-11-06T02:00"
+      },
+      {
+       "at_sent": 26,
+       "until": "2026-11-06T09:00"
+      }
+     ]
+    },
+    "items": [
+     {
+      "type": "highlight",
+      "from": "2026-11-05T14:00",
+      "to": "2026-11-05T20:00",
+      "col": "red",
+      "label": "US STOCKS CRASH",
+      "at_sent": 24
+     },
+     {
+      "type": "measure",
+      "a": {
+       "t": "2026-11-05T14:00",
+       "f": "o"
+      },
+      "b": {
+       "t": "2026-11-06T02:00",
+       "f": "c"
+      },
+      "col": "gold",
+      "at_sent": 25,
+      "at_word": "1.5",
+      "dur": 0.8
+     }
+    ],
+    "asof_marker": true
+   },
+   "source_ids": [
+    "data_paxg",
+    "euronews"
+   ],
+   "source_text": "5 Nov 14:00 open → 6 Nov 02:00 close · PAXG-USD 1h, Coinbase (spot-gold proxy), UTC · to 6 Nov 09:00",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 24
+    },
+    {
+     "cue": "hit",
+     "at_sent": 25,
+     "at_word": "1.5"
+    }
+   ]
+  },
+  {
+   "id": "B07",
+   "sents": [
+    28,
+    35
+   ],
+   "kind": "interpretation",
+   "storyboard": "The margin-call mechanism.",
+   "visual": {
+    "template": "mechanism",
+    "title": "HOW A MARGIN CALL WORKS",
+    "items": [
+     {
+      "t": "Shock + forced liquidation",
+      "col": "white",
+      "at_sent": 28
+     },
+     {
+      "t": "Broker: add capital, or we close you",
+      "col": "white",
+      "at_sent": 30
+     },
+     {
+      "t": "Funds sell their most liquid asset",
+      "col": "gold",
+      "at_sent": 33
+     },
+     {
+      "t": "= GOLD falls even sharper",
+      "col": "red",
+      "at_sent": 34
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "How margin calls usually hit gold",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 30
+    },
+    {
+     "cue": "hit",
+     "at_sent": 34
+    }
+   ]
+  },
+  {
+   "id": "B08",
+   "sents": [
+    36,
+    38
+   ],
+   "kind": "observation",
+   "storyboard": "Stocks vs gold, side by side.",
+   "visual": {
+    "template": "compare",
+    "title": "BUT LOOK WHAT HAPPENED",
+    "left_head": "S&P 500",
+    "right_head": "GOLD",
+    "rows": [
+     {
+      "left": "−4.4% in one day",
+      "right": "≈ −1.6%, slowly",
+      "col": "green",
+      "mark": "✓",
+      "at_sent": 38,
+      "at_word": "4.4",
+      "at2_sent": 38
+     },
+     {
+      "left": "Forced liquidation",
+      "right": "Didn't budge",
+      "col": "green",
+      "mark": "",
+      "at_sent": 37,
+      "at2_sent": 37,
+      "at2_word": "budge"
+     }
+    ]
+   },
+   "source_ids": [
+    "foxbiz",
+    "data_paxg"
+   ],
+   "source_text": "S&P 500 close 5 Nov (Fox Business) · gold 5 Nov 14:00 → 6 Nov 02:00 UTC, PAXG-USD 1h",
+   "sound": [
+    {
+     "cue": "silence",
+     "at_sent": 37,
+     "dur": 0.4
+    },
+    {
+     "cue": "hit",
+     "at_sent": 37,
+     "at_word": "budge"
+    }
+   ]
+  },
+  {
+   "id": "B09",
+   "sents": [
+    39,
+    50
+   ],
+   "kind": "interpretation",
+   "storyboard": "What it means.",
+   "visual": {
+    "template": "list",
+    "title": "WHAT THAT TELLS US · MY READ",
+    "items": [
+     {
+      "t": "Leverage in stocks washed out yesterday",
+      "col": "white",
+      "at_sent": 42
+     },
+     {
+      "t": "To go lower you need new, fresh money",
+      "col": "white",
+      "at_sent": 46
+     },
+     {
+      "t": "Stocks at their lows: who sells here?",
+      "col": "gold",
+      "at_sent": 48
+     },
+     {
+      "t": "No margin-call danger for gold",
+      "col": "green",
+      "at_sent": 50
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 42
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 48
+    },
+    {
+     "cue": "hit",
+     "at_sent": 50
+    }
+   ]
+  },
+  {
+   "id": "B10",
+   "sents": [
+    51,
+    51
+   ],
+   "kind": null,
+   "storyboard": "A light moment.",
+   "visual": {
+    "template": "title",
+    "lines": [
+     {
+      "t": "I feel like Sherlock Holmes.",
+      "col": "gold",
+      "at_sent": 51
+     }
+    ]
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 51,
+     "at_word": "holmes"
+    }
+   ]
+  },
+  {
+   "id": "B11",
+   "sents": [
+    52,
+    56
+   ],
+   "kind": "context",
+   "storyboard": "The Fed view.",
+   "visual": {
+    "template": "headline",
+    "title": "WHY NFP DOESN'T MATTER · THE FED",
+    "items": [
+     {
+      "publisher": "Washington Examiner · on Warsh at Jackson Hole",
+      "date": "1 Sep 2026",
+      "headline": "accelerating business investment, and potentially greater productivity … increasing how fast America can grow without generating inflation",
+      "url_short": "→ strong NFP + flat hourly earnings = no faster hikes (my read)",
+      "at_sent": 54
+     }
+    ]
+   },
+   "source_ids": [
+    "warsh",
+    "analysis"
+   ],
+   "source_text": "Washington Examiner, 1 Sep 2026 · the conclusion is my read",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 54
+    },
+    {
+     "cue": "hit",
+     "at_sent": 56
+    }
+   ]
+  },
+  {
+   "id": "B12",
+   "sents": [
+    57,
+    64
+   ],
+   "kind": "data",
+   "storyboard": "Yields and FedWatch.",
+   "visual": {
+    "template": "list",
+    "title": "RATES ARE TELLING US",
+    "items": [
+     {
+      "t": "2-year yield −12 bp to 4.46%",
+      "sub": "less AI spending → fewer hikes",
+      "col": "green",
+      "at_sent": 57
+     },
+     {
+      "t": "December hike odds: ~82% → ~66%",
+      "sub": "CME FedWatch",
+      "col": "gold",
+      "at_sent": 60,
+      "at_word": "82"
+     },
+     {
+      "t": "Hot NFP → back to 80–90%: already expected",
+      "col": "white",
+      "at_sent": 62
+     },
+     {
+      "t": "The bad scenario for gold is out",
+      "col": "green",
+      "at_sent": 64
+     }
+    ]
+   },
+   "source_ids": [
+    "fedwatch",
+    "analysis"
+   ],
+   "source_text": "Pomegra citing CME FedWatch, 6 Nov 2026 · rows 3–4: my read",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 57
+    },
+    {
+     "cue": "hit",
+     "at_sent": 61,
+     "at_word": "66"
+    },
+    {
+     "cue": "hit",
+     "at_sent": 64
+    }
+   ]
+  },
+  {
+   "id": "B13",
+   "sents": [
+    65,
+    70
+   ],
+   "kind": "scenario",
+   "storyboard": "Both outcomes.",
+   "visual": {
+    "template": "compare",
+    "title": "BOTH CASES · MY VIEW",
+    "left_head": "HOT NFP",
+    "right_head": "WEAK NFP",
+    "rows": [
+     {
+      "left": "Hike already priced",
+      "right": "Bad news is good news",
+      "col": "green",
+      "mark": "",
+      "at_sent": 65,
+      "at2_sent": 67
+     },
+     {
+      "left": "Gold: bullish",
+      "right": "Gold: bullish → spike",
+      "col": "green",
+      "mark": "✓",
+      "at_sent": 70,
+      "at2_sent": 70,
+      "at2_word": "bullish"
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "riser_hit",
+     "at_sent": 69,
+     "dur": 0.8
+    },
+    {
+     "cue": "hit",
+     "at_sent": 70,
+     "at_word": "bullish"
+    }
+   ]
+  },
+  {
+   "id": "B14",
+   "sents": [
+    71,
+    81
+   ],
+   "kind": "interpretation",
+   "storyboard": "Positioning on the chart.",
+   "visual": {
+    "template": "chart",
+    "title": "GOLD · 2 → 6 NOV, HOURLY",
+    "headline": "Positioning · my data read",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-02T12:00",
+      "to": "2026-11-06T09:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "zone",
+      "p1": 3900,
+      "p2": 3930,
+      "col": "cyan",
+      "label": "ACCUMULATION 3,900–3,930",
+      "label_x": 0.45,
+      "at_sent": 73
+     },
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "red",
+      "label": "NEW LONGS ~4,100 · UNDER WATER",
+      "label_x": 0.05,
+      "at_sent": 75
+     },
+     {
+      "type": "note",
+      "text": "≈15K CONTRACTS ADDED · 4–5K AT 4,100 · MY DATA",
+      "col": "gold",
+      "at_sent": 77
+     }
+    ],
+    "asof_marker": true
+   },
+   "source_ids": [
+    "analysis",
+    "data_paxg"
+   ],
+   "source_text": "Positions: my data, not shown · price: PAXG-USD 1h, Coinbase (spot-gold proxy), UTC · to 6 Nov 09:00",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 73
+    },
+    {
+     "cue": "reveal",
+     "at_sent": 75
+    },
+    {
+     "cue": "hit",
+     "at_sent": 79,
+     "at_word": "10"
+    }
+   ]
+  },
+  {
+   "id": "B15",
+   "sents": [
+    82,
+    85
+   ],
+   "kind": "interpretation",
+   "storyboard": "Dealer hedging levels.",
+   "visual": {
+    "template": "chart",
+    "title": "GOLD · 5 → 6 NOV, HOURLY",
+    "headline": "Dealer hedging · my data read",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-05T00:00",
+      "to": "2026-11-06T09:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "level",
+      "price": 4040,
+      "col": "green",
+      "label": "DEALER SUPPORT ~4,040 · POSITIVE DELTA",
+      "label_x": 0.02,
+      "at_sent": 82,
+      "at_word": "4040"
+     },
+     {
+      "type": "level",
+      "price": 4100,
+      "col": "gold",
+      "label": "ACCELERATION ABOVE 4,100",
+      "label_x": 0.02,
+      "at_sent": 84
+     }
+    ],
+    "asof_marker": true
+   },
+   "source_ids": [
+    "analysis",
+    "data_paxg"
+   ],
+   "source_text": "Dealer levels: my data · price: PAXG-USD 1h, Coinbase (spot-gold proxy), UTC · to 6 Nov 09:00",
+   "sound": [
+    {
+     "cue": "reveal",
+     "at_sent": 82,
+     "at_word": "4040"
+    },
+    {
+     "cue": "riser_hit",
+     "at_sent": 85,
+     "at_word": "accelerates",
+     "dur": 0.8
+    }
+   ]
+  },
+  {
+   "id": "B16",
+   "sents": [
+    86,
+    89
+   ],
+   "kind": "interpretation",
+   "storyboard": "China.",
+   "visual": {
+    "template": "title",
+    "kicker": "CHINA · MY DATA",
+    "lines": [
+     {
+      "t": "20,000+ lots closed in 3 days.",
+      "at_sent": 87
+     },
+     {
+      "t": "Short take-profit, now longs.",
+      "col": "muted",
+      "at_sent": 88
+     },
+     {
+      "t": "No fuel to push gold down.",
+      "col": "gold",
+      "at_sent": 89
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My data",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 89
+    }
+   ]
+  },
+  {
+   "id": "B17",
+   "sents": [
+    90,
+    92
+   ],
+   "kind": "plan",
+   "storyboard": "The trade on the chart.",
+   "visual": {
+    "template": "chart",
+    "title": "MY TRADE · 6 NOV",
+    "headline": "Buy 4,040 · stop 1% · target 4,250",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-02T12:00",
+      "to": "2026-11-09T00:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "highlight",
+      "from": "2026-11-06T03:00",
+      "col": "green",
+      "label": "BUY 4,040",
+      "label_pos": "below",
+      "at_sent": 91,
+      "at_word": "buy"
+     },
+     {
+      "type": "level",
+      "price": 4000,
+      "col": "red",
+      "label": "STOP −1% ≈ 4,000",
+      "label_x": 0.05,
+      "label_below": true,
+      "at_sent": 91,
+      "at_word": "stop"
+     },
+     {
+      "type": "level",
+      "price": 4250,
+      "col": "gold",
+      "label": "TARGET 4,250 (+5%)",
+      "label_x": 0.05,
+      "at_sent": 92,
+      "at_word": "4250"
+     }
+    ],
+    "asof_marker": true
+   },
+   "source_ids": [
+    "analysis",
+    "data_paxg"
+   ],
+   "source_text": "My trade · PAXG-USD 1h, Coinbase (spot-gold proxy), UTC · to 6 Nov 09:00",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 91,
+     "at_word": "buy"
+    },
+    {
+     "cue": "riser_hit",
+     "at_sent": 92,
+     "at_word": "4250",
+     "dur": 1.0
+    }
+   ]
+  },
+  {
+   "id": "B18",
+   "sents": [
+    93,
+    104
+   ],
+   "kind": "scenario",
+   "storyboard": "The one risk.",
+   "visual": {
+    "template": "mechanism",
+    "title": "THE <5% RISK · NEGATIVE NFP",
+    "items": [
+     {
+      "t": "Very negative NFP = recession fear",
+      "col": "white",
+      "at_sent": 96
+     },
+     {
+      "t": "Algos spike gold & stocks",
+      "col": "green",
+      "at_sent": 98
+     },
+     {
+      "t": "Positions unwind, stocks fall",
+      "col": "red",
+      "at_sent": 99
+     },
+     {
+      "t": "Margin calls hit gold → get out",
+      "col": "red",
+      "at_sent": 100
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis · if NFP is super low or negative, I get out of longs",
+   "sound": [
+    {
+     "cue": "silence",
+     "at_sent": 93,
+     "dur": 0.4
+    },
+    {
+     "cue": "hit",
+     "at_sent": 95
+    },
+    {
+     "cue": "hit",
+     "at_sent": 104
+    }
+   ]
+  },
+  {
+   "id": "B19",
+   "sents": [
+    105,
+    110
+   ],
+   "kind": "plan",
+   "storyboard": "Humility + risk.",
+   "visual": {
+    "template": "title",
+    "lines": [
+     {
+      "t": "I may be wrong.",
+      "at_sent": 106
+     },
+     {
+      "t": "That's the market, and probability.",
+      "col": "muted",
+      "at_sent": 109
+     },
+     {
+      "t": "Control your capital.",
+      "col": "gold",
+      "at_sent": 110
+     }
+    ]
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 110
+    }
+   ]
+  },
+  {
+   "id": "B20",
+   "sents": [
+    111,
+    114
+   ],
+   "kind": null,
+   "storyboard": "Outro.",
+   "visual": {
+    "template": "outro",
+    "cta": "Are you buying gold into NFP — or waiting?"
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "outro",
+     "at": 0.2
+    }
+   ]
+  }
+ ]
+}

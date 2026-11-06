@@ -58,7 +58,8 @@ def place(tr, s, at):
 
 sfx = np.zeros(N, np.float32); silences = []
 P = {"documentary": dict(beat=0.14, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
-     "trailer": dict(beat=0.38, reveal=0.30, hit=0.95, music=0.22, riser=0.36)}[PROFILE]
+     "trailer": dict(beat=0.38, reveal=0.30, hit=0.95, music=0.22, riser=0.36),
+     "energetic": dict(beat=0.28, reveal=0.26, hit=0.70, music=0.19, riser=0.24)}[PROFILE]
 for i, b in enumerate(BEATS):
     st = b["start"]
     if i > 0: place(sfx, whoosh(0.5, P["beat"]), st - 0.25)
@@ -66,7 +67,7 @@ for i, b in enumerate(BEATS):
         at = st + c.get("at", 0.0); cue = c["cue"]
         if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, whoosh(0.25, P["reveal"] * 0.7), at - 0.12)
         elif cue == "hit":
-            if PROFILE == "trailer": place(sfx, riser(1.0, P["riser"]), at - 1.0); place(sfx, boom(P["hit"]), at)
+            if PROFILE in ("trailer", "energetic"): place(sfx, riser(1.0, P["riser"]), at - 1.0); place(sfx, boom(P["hit"]), at)
             else: place(sfx, thud(P["hit"]), at)
         elif cue == "riser_hit": place(sfx, riser(c.get("dur", 1.6), max(0.3, P["riser"])), at - c.get("dur", 1.6)); place(sfx, boom(P["hit"]), at)
         elif cue == "whoosh": place(sfx, whoosh(0.6, P["beat"] * 1.4), at - 0.3)
@@ -82,7 +83,7 @@ if MUSIC != "none" and os.path.exists(MUSIC):
         loop = np.tile(m, int(math.ceil(N / len(m))) + 1)[:N]
         loop[:int(1.5 * SR)] *= np.linspace(0, 1, int(1.5 * SR)); loop[-int(3 * SR):] *= np.linspace(1, 0, int(3 * SR))
         w = int(0.05 * SR); ve = np.convolve(np.abs(vt), np.ones(w) / w, mode="same"); ve = np.convolve(ve, np.ones(int(0.4 * SR)) / int(0.4 * SR), mode="same")
-        duck = 1.0 - 0.65 * np.clip(ve / (ve.max() + 1e-9) * 6, 0, 1)
+        duck = 1.0 - (0.5 if PROFILE == "energetic" else 0.65) * np.clip(ve / (ve.max() + 1e-9) * 6, 0, 1)
         mt = loop * P["music"] * duck
 for a, b_ in silences:                       # brief silence: music and sfx drop out, voice stays
     i0, i1 = int(a * SR), int(b_ * SR); fadeN = int(0.08 * SR)

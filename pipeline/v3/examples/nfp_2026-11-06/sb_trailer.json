@@ -1,0 +1,315 @@
+{
+ "meta": {
+  "id": "update_2026-11-06_trailer",
+  "format": "9x16",
+  "brand": "ANONYMOUS WOLF TRADER",
+  "vdate": "GOLD · NFP DAY · 6 NOV",
+  "candles": "candles_v.json",
+  "asof": "2026-11-06T09:00",
+  "audio_profile": "trailer",
+  "tail": 1.0,
+  "voice": "voice_trailer.mp3"
+ },
+ "beats": [
+  {
+   "id": "S1",
+   "sents": [
+    0,
+    2
+   ],
+   "kind": "interpretation",
+   "storyboard": "",
+   "visual": {
+    "template": "title",
+    "kicker": "NFP DAY",
+    "lines": [
+     {
+      "t": "Every guru is yelling.",
+      "at_sent": 0
+     },
+     {
+      "t": "For gold, it's not important.",
+      "col": "gold",
+      "at_sent": 2
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 2
+    }
+   ]
+  },
+  {
+   "id": "S2",
+   "sents": [
+    3,
+    5
+   ],
+   "kind": "data",
+   "storyboard": "",
+   "visual": {
+    "template": "list",
+    "title": "THE AI CRASH · 5 NOV",
+    "items": [
+     {
+      "t": "Nasdaq −5.5%",
+      "col": "red",
+      "at_sent": 3
+     },
+     {
+      "t": "S&P 500 −4.4%",
+      "col": "red",
+      "at_sent": 4
+     },
+     {
+      "t": "Funds sell gold for margin calls",
+      "col": "gold",
+      "at_sent": 5
+     }
+    ]
+   },
+   "source_ids": [
+    "foxbiz"
+   ],
+   "source_text": "Fox Business, 5 Nov 2026",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 3
+    },
+    {
+     "cue": "hit",
+     "at_sent": 4
+    }
+   ]
+  },
+  {
+   "id": "S3",
+   "sents": [
+    6,
+    7
+   ],
+   "kind": "observation",
+   "storyboard": "",
+   "visual": {
+    "template": "chart",
+    "title": "GOLD · 5 → 6 NOV",
+    "headline": "Gold only slipped ~1.5%",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-05T00:00",
+      "to": "2026-11-06T09:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "measure",
+      "a": {
+       "t": "2026-11-05T14:00",
+       "f": "o"
+      },
+      "b": {
+       "t": "2026-11-06T02:00",
+       "f": "c"
+      },
+      "col": "gold",
+      "at_sent": 6,
+      "at_word": "1.5",
+      "dur": 0.6
+     }
+    ],
+    "asof_marker": false
+   },
+   "source_ids": [
+    "data_paxg"
+   ],
+   "source_text": "PAXG-USD 1h, Coinbase, UTC",
+   "sound": [
+    {
+     "cue": "riser_hit",
+     "at_sent": 6,
+     "at_word": "1.5",
+     "dur": 0.8
+    }
+   ]
+  },
+  {
+   "id": "S4",
+   "sents": [
+    8,
+    12
+   ],
+   "kind": "scenario",
+   "storyboard": "",
+   "visual": {
+    "template": "compare",
+    "title": "BOTH CASES",
+    "left_head": "HOT NFP",
+    "right_head": "WEAK NFP",
+    "rows": [
+     {
+      "left": "Hike already priced",
+      "right": "Bad news = good news",
+      "col": "green",
+      "mark": "",
+      "at_sent": 9,
+      "at2_sent": 11
+     },
+     {
+      "left": "Gold bullish",
+      "right": "Gold bullish",
+      "col": "green",
+      "mark": "✓",
+      "at_sent": 12,
+      "at2_sent": 12
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My view",
+   "sound": [
+    {
+     "cue": "hit",
+     "at_sent": 12
+    }
+   ]
+  },
+  {
+   "id": "S5",
+   "sents": [
+    13,
+    14
+   ],
+   "kind": "plan",
+   "storyboard": "",
+   "visual": {
+    "template": "chart",
+    "title": "MY TRADE",
+    "headline": "Buy 4,040 → 4,250",
+    "view": [
+     {
+      "at": 0,
+      "from": "2026-11-03T00:00",
+      "to": "2026-11-08T00:00"
+     }
+    ],
+    "items": [
+     {
+      "type": "highlight",
+      "from": "2026-11-06T03:00",
+      "col": "green",
+      "label": "BUY 4,040",
+      "label_pos": "below",
+      "at_sent": 13
+     },
+     {
+      "type": "level",
+      "price": 4000,
+      "col": "red",
+      "label": "STOP −1%",
+      "label_below": true,
+      "at_sent": 13,
+      "at_word": "stop"
+     },
+     {
+      "type": "level",
+      "price": 4250,
+      "col": "gold",
+      "label": "TARGET 4,250",
+      "at_sent": 14
+     }
+    ],
+    "asof_marker": false
+   },
+   "source_ids": [
+    "analysis",
+    "data_paxg"
+   ],
+   "source_text": "My trade",
+   "sound": [
+    {
+     "cue": "riser_hit",
+     "at_sent": 14,
+     "at_word": "4250",
+     "dur": 0.8
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "sents": [
+    15,
+    17
+   ],
+   "kind": "scenario",
+   "storyboard": "",
+   "visual": {
+    "template": "title",
+    "kicker": "THE ONLY RISK",
+    "lines": [
+     {
+      "t": "Negative NFP → margin-call unwind.",
+      "col": "red",
+      "at_sent": 16
+     },
+     {
+      "t": "If that happens, get out.",
+      "col": "gold",
+      "at_sent": 17
+     }
+    ]
+   },
+   "source_ids": [
+    "analysis"
+   ],
+   "source_text": "My analysis",
+   "sound": [
+    {
+     "cue": "silence",
+     "at_sent": 15,
+     "dur": 0.3
+    },
+    {
+     "cue": "hit",
+     "at_sent": 17
+    }
+   ]
+  },
+  {
+   "id": "S7",
+   "sents": [
+    18,
+    18
+   ],
+   "kind": null,
+   "storyboard": "",
+   "visual": {
+    "template": "title",
+    "lines": [
+     {
+      "t": "My own analysis — not financial advice.",
+      "col": "muted",
+      "at_sent": 18
+     }
+    ]
+   },
+   "source_ids": [],
+   "source_text": "",
+   "sound": [
+    {
+     "cue": "outro",
+     "at_sent": 18
+    }
+   ]
+  }
+ ]
+}

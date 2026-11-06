@@ -19,6 +19,7 @@ import sbutil, evchart as EC
 
 def nums(s):
     out = []
+    s = re.sub(r"\S*(youtu|https?://)\S*", " ", s)
     s = s.replace("−", "-").replace("–", " ").replace("—", " ")
     for m in re.finditer(r"(\d[\d,]*(?:\.\d+)?)\s*(k|K|bp|%|pp)?", s):
         v = float(m.group(1).replace(",", "")); u = m.group(2) or ""
@@ -26,7 +27,7 @@ def nums(s):
         out.append(v)
     return out
 
-WORDNUM = {"ninety": 90, "two thousand": 2000, "half a percent": 0.5, "one and a half": 1.5, "six": 6, "three": 3, "two": 2, "one": 1}
+WORDNUM = {"twenty": 20, "fifteen": 15, "ten": 10, "ninety": 90, "two thousand": 2000, "half a percent": 0.5, "one and a half": 1.5, "six": 6, "three": 3, "two": 2, "one": 1}
 DAYS_RE = re.compile(r"\b(\d{1,2})\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\w*", re.I)
 TIME_RE = re.compile(r"\b\d{1,2}:\d{2}\b")
 
@@ -52,7 +53,7 @@ def run(sb_path, tm_path, script_path, src_path, video, tag):
     narr = open(script_path).read().lower()
     allowed = set(nums(narr))
     for w, v in WORDNUM.items():
-        if w in narr: allowed.add(v)
+        if re.search(r"\b" + w + r"\b", narr): allowed.add(v)
     for k, s in srcs.items():
         allowed |= set(nums(json.dumps(s.get("facts", {}), ensure_ascii=False)))
         for it in s.get("items", []): allowed |= set(nums(it.get("headline", "")))

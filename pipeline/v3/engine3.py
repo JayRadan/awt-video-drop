@@ -175,7 +175,7 @@ def T_headline(img, d, b, lt, dur):
         d.text((x0 + 36, yy_ + 22), meta, font=F["tag"], fill=fade(GOLD, u))
         f = F["h3"] if not VERT else F["h3"]
         for j, l in enumerate(wrap(d, "“" + it["headline"] + "”", f, x1 - x0 - 72)[:3]): d.text((x0 + 36, yy_ + 62 + j * 50), l, font=f, fill=fade(WHITE, u))
-        d.text((x0 + 36, yy_ + h - 40), it.get("url_short", ""), font=F["src"], fill=fade(DIM, u))
+        for j, l in enumerate(wrap(d, it.get("url_short", ""), F["sm"], x1 - x0 - 72)[:2][::-1]): d.text((x0 + 36, yy_ + h - 44 - j * 36), l, font=F["sm"], fill=fade(MUTED, u))
 
 def T_stat(img, d, b, lt, dur):
     v = b["visual"]; x0, y0, x1, y1 = CONTENT

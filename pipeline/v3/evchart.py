@@ -64,17 +64,10 @@ def draw(img, box, spec, lt, data, F, S=1.0):
     # reveal
     rv = spec.get("reveal")
     vis_end = data.asof
-    if rv and rv.get("keys"):                  # piecewise reveal: candles reach each 'until' exactly at its 'at'
-        ks = rv["keys"]; vis_end = ts(ks[0]["until"])
-        for a_, b_ in zip(ks, ks[1:]):
-            if lt >= b_["at"]: vis_end = ts(b_["until"])
-            elif lt > a_["at"]:
-                vis_end = lerp(ts(a_["until"]), ts(b_["until"]), (lt - a_["at"]) / max(0.05, b_["at"] - a_["at"])); break
-            else: break
-    elif rv:
+    if rv:
         r0, r1 = ts(rv.get("from", data.c[0]["t"])), ts(rv.get("until", data.c[-1]["t"]))
         vis_end = lerp(r0, r1, ease_io((lt - rv.get("at", 0)) / rv.get("dur", 2.0)))
-    cs = [c for c in data.c if va - 3600 <= c["ts"] <= vb and c["ts"] <= vis_end + 1]
+    cs = [c for c in data.c if va <= c["ts"] <= vb and c["ts"] <= vis_end + 1]
     items = [it for it in spec.get("items", []) if lt >= it.get("at", 0)]
     lo = min([c["l"] for c in cs] or [data.c[-1]["l"]]); hi = max([c["h"] for c in cs] or [data.c[-1]["h"]])
     for it in spec.get("items", []):           # keep the y-range stable: include all planned overlays from the start
@@ -103,6 +96,10 @@ def draw(img, box, spec, lt, data, F, S=1.0):
     # scenario region (future) shading first, so candles sit on top
     for it in items:
         if it["type"] == "scenario": _scenario_region(d, it, lt, data, X, Y, px0, py0, px1, py1, F, S)
+    # zones sit behind the candles
+    for it in items:
+        if it["type"] == "zone":
+            u = ease((lt - it.get("at", 0)) / it.get("dur", 0.6)); _O.zone_fill(d, it, u, data, X, Y, px0, px1, S)
     # candles
     n = max(1, (vb - va) / 3600); cw = max(1.0, (px1 - px0) / n * 0.62)
     for c in cs:
@@ -168,21 +165,25 @@ def _scenario_region(d, it, lt, data, X, Y, px0, py0, px1, py1, F, S):
 
 class _O:
     @staticmethod
+    def zone_fill(d, it, u, data, X, Y, px0, px1, S):
+        c = col(it.get("col", "gold")); ya, yb = Y(it["p1"]), Y(it["p2"])
+        xa = max(px0, X(data.asof)) if it.get("future") else px0
+        k = 0.10 if c[0] > 200 and c[1] > 200 and c[2] > 200 else 0.16
+        d.rectangle([xa, min(ya, yb), px1, max(ya, yb)], fill=tuple(int(9 + (v - 9) * k * u) for v in c))
+    @staticmethod
     def level(d, it, u, lt, data, X, Y, px0, py0, px1, py1, F, S):
         c = col(it.get("col", "gold")); y = Y(it["price"]); xe = px0 + (px1 - px0) * u
         if it.get("style", "dash") == "dash": _dash(d, (px0, y), (xe, y), c, max(2, int(3 * S)))
         else: d.line([(px0, y), (xe, y)], fill=c, width=max(2, int(3 * S)))
-        if u > 0.6 and it.get("label"): _label(d, px0 + int(10 * S), y - int(22 * S), it["label"], c, F, S)
+        if u > 0.6 and it.get("label"): _label(d, px0 + int((px1 - px0) * it.get("label_x", 0)) + int(10 * S), y - int(22 * S) + (int(30 * S) if it.get("label_below") else 0), it["label"], c, F, S)
     @staticmethod
     def zone(d, it, u, lt, data, X, Y, px0, py0, px1, py1, F, S):
         c = col(it.get("col", "gold")); ya, yb = Y(it["p1"]), Y(it["p2"])
         xa = max(px0, X(data.asof)) if it.get("future") else px0
-        fill = tuple(int(9 + (v - 9) * 0.16 * u) for v in c)
-        d.rectangle([xa, min(ya, yb), px1, max(ya, yb)], fill=fill)
         d.line([(xa, ya), (px1, ya)], fill=tuple(int(v * 0.6) for v in c), width=1); d.line([(xa, yb), (px1, yb)], fill=tuple(int(v * 0.6) for v in c), width=1)
         if u > 0.5 and it.get("label"):
             ly = (max(ya, yb) - int(22 * S)) if it.get("future") else (min(ya, yb) - int(20 * S))
-            _label(d, xa + int(10 * S), ly, it["label"], c, F, S)
+            _label(d, xa + int((px1 - xa) * it.get("label_x", 0)) + int(10 * S), ly + (int(int(22 * S) + abs(ya - yb) + int(8 * S)) if it.get("label_below") else 0), it["label"], c, F, S)
     @staticmethod
     def highlight(d, it, u, lt, data, X, Y, px0, py0, px1, py1, F, S):
         c = col(it.get("col", "gold")); a, b = ts(it["from"]), ts(it.get("to", it["from"]))

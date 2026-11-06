@@ -1,0 +1,133 @@
+{
+ "video": "update_2026-11-06",
+ "checked_on": "2026-11-06T10:20Z",
+ "sources": {
+  "data_paxg": {
+   "type": "market data",
+   "what": "PAXG-USD hourly OHLC (spot-gold proxy)",
+   "publisher": "Coinbase Exchange public API",
+   "url": "https://api.exchange.coinbase.com/products/PAXG-USD/candles?granularity=3600",
+   "data_timestamp": "candles to 2026-11-06T09:00Z",
+   "rights": "public market data; chart rendered by us",
+   "facts": {
+    "us_open": "2026-11-05T14:00 open 4,114.74",
+    "asia": "2026-11-06T02:00 close 4,048.03 (−1.6%)",
+    "low_today": "2026-11-06T03:00 low 4,028.61",
+    "now": "2026-11-06T09:00 close 4,062.65",
+    "high_5nov": "4,133.18",
+    "buy": "4,040 (his entry)",
+    "stop": "1% below 4,040 ≈ 4,000",
+    "target": "4,250 = +5.2% from 4,040",
+    "accum": "3,900–3,930 zone; 4,100 adds (his read)"
+   },
+   "verdict": "VERIFIED"
+  },
+  "foxbiz": {
+   "type": "news",
+   "publisher": "Fox Business",
+   "title": "Stocks plunge as Dem midterm sweep fuels AI regulatory concerns",
+   "date": "2026-11-05",
+   "url": "https://www.foxbusiness.com/markets/stocks-nov-5-2026",
+   "quote": "some Democrats called for restrictions or pauses on new data center projects",
+   "facts": {
+    "dow": "−3.44%",
+    "sp": "−4.36%",
+    "nasdaq": "−5.52%",
+    "nvda": "−9.26%"
+   },
+   "verdict": "VERIFIED"
+  },
+  "euronews": {
+   "type": "news",
+   "publisher": "Euronews",
+   "title": "Global stock rout deepens as AI data centre fears fuel worst US chip sell-off since 2020",
+   "date": "2026-11-06 07:01 UTC",
+   "url": "https://www.euronews.com/2026/11/06/global-stock-rout-deepens-as-ai-data-centre-fears-fuel-worst-us-chip-sell-off-since-2020",
+   "facts": {
+    "nikkei": "−5.7% by midday (−7% at one point)",
+    "taiex": "closed −4.5% after more than −8% early",
+    "kospi": "−8.8% at one point, halt",
+    "sox": "−12.2%",
+    "sp_value": "record $2.9 trillion lost",
+    "gold": "spot −1.1% to $4,044 by 06:00 CET"
+   },
+   "verdict": "VERIFIED"
+  },
+  "aljazeera": {
+   "type": "news",
+   "publisher": "Al Jazeera",
+   "title": "AI stocks plunge after US election, driving down markets",
+   "date": "2026-11-05",
+   "url": "https://www.aljazeera.com/economy/2026/11/5/ai-stocks-plunge-after-election-driving-down-us-markets",
+   "quote": "voters in 45 data centre ballot initiatives backed restrictions on most of them, with 39 succeeding",
+   "verdict": "VERIFIED"
+  },
+  "fedwatch": {
+   "type": "news",
+   "publisher": "Pomegra (citing CME FedWatch)",
+   "title": "Fed Rate Hike Odds Slip to 66% Ahead of Jobs Report",
+   "date": "2026-11-06",
+   "url": "https://pomegra.io/news/fed-rate-hike-odds-slip-to-66-ahead-of-jobs-report",
+   "facts": {
+    "dec_hike": "~66% at Thursday close; post-election high ~82%",
+    "2y": "−12.2 bp to 4.459%",
+    "2y_rounded": "−12 bp to 4.46%"
+   },
+   "verdict": "VERIFIED"
+  },
+  "warsh": {
+   "type": "news/op-ed",
+   "publisher": "Washington Examiner (Dan Varroney)",
+   "title": "Kevin Warsh just challenged the Fed's artificial speed limit on US growth",
+   "date": "2026-09-01",
+   "url": "https://www.washingtonexaminer.com/op-eds/4707115/fed-artificial-speed-limit-us-growth/",
+   "quote": "accelerating business investment, and potentially greater productivity … increasing how fast America can grow without generating inflation",
+   "note": "Quote on screen is verbatim from the op-ed; the 'no job losses' / NFP conclusion is labelled on screen as my read",
+   "verdict": "VERIFIED"
+  },
+  "nfp": {
+   "type": "calendar",
+   "publisher": "BLS Employment Situation (via economic calendars)",
+   "title": "US Non-Farm Payrolls, October data",
+   "date": "2026-11-06 13:30 UTC",
+   "url": "https://thriveinmarkets.com/calendar/dates/nfp-2026/",
+   "verdict": "VERIFIED"
+  },
+  "prev_videos": {
+   "type": "own analysis (published)",
+   "publisher": "Anonymous Wolf Trader",
+   "url": "https://youtu.be/40OJcQcUcyE ; https://youtu.be/DFbXD8vK-3E ; https://youtube.com/shorts/hQtQRJ3Kvj8",
+   "verdict": "VERIFIED"
+  },
+  "analysis": {
+   "type": "own analysis",
+   "publisher": "Jacob, 6 Nov 2026",
+   "what": "positioning (15k contracts, 4–5k at 4,100), dealer hedging 4,040/4,100, China 20k lots closed, probabilities, margin-call mechanism, trade plan",
+   "rights": "own",
+   "facts": {
+    "contracts": "about 15,000 contracts added; 4,000–5,000 of them at 4,100 (his data)",
+    "china": "more than 20,000 lots closed in 3 days (his data)"
+   }
+  },
+  "voice": {
+   "type": "audio",
+   "what": "cloned 'Wolf Trader' voice via vidIQ",
+   "rights": "user-owned clone; vidIQ terms"
+  },
+  "music": {
+   "type": "audio",
+   "what": "vidIQ-generated music bed",
+   "rights": "vidIQ terms"
+  },
+  "sfx": {
+   "type": "audio",
+   "what": "synthesised in code",
+   "rights": "original"
+  },
+  "fonts": {
+   "type": "font",
+   "what": "Inter",
+   "rights": "SIL OFL"
+  }
+ }
+}

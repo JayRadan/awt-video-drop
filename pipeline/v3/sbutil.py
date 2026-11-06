@@ -19,7 +19,7 @@ def word_time(T, si, prefix=None):
 def _resolve(obj, T, b0):
     if isinstance(obj, dict):
         if "at_sent" in obj:
-            obj["at"] = round(max(0.0, word_time(T, obj["at_sent"], obj.get("at_word")) - b0) + obj.get("plus", 0.0), 2)
+            obj["at"] = round(max(0.0, word_time(T, obj["at_sent"], obj.get("at_word")) - b0), 2)
         for k in ("at2_sent",):
             if k in obj: obj["at2"] = round(max(0.0, word_time(T, obj[k], obj.get("at2_word")) - b0), 2)
         if "focus_sents" in obj:
