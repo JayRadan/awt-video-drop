@@ -60,21 +60,21 @@ def place(tr, s, at):
     m = min(len(s), len(tr) - i); tr[i:i + m] += s[:m]
 
 sfx = np.zeros(N, np.float32); silences = []
-# Nov 18 2026: Jacob found the scene-change swoosh and risers ("vroop") too loud -> beat swoosh and risers cut way down
-P = {"documentary": dict(beat=0.04, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
-     "trailer": dict(beat=0.07, reveal=0.26, hit=0.85, music=0.22, riser=0.08),
-     "energetic": dict(beat=0.05, reveal=0.22, hit=0.65, music=0.19, riser=0.06)}[PROFILE]
+# Nov 18 2026: Jacob found the scene-change swoosh and risers ("vroop") too loud -> beat swoosh and risers cut way down; halved again after his review
+P = {"documentary": dict(beat=0.02, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
+     "trailer": dict(beat=0.035, reveal=0.26, hit=0.85, music=0.22, riser=0.04),
+     "energetic": dict(beat=0.025, reveal=0.22, hit=0.65, music=0.19, riser=0.03)}[PROFILE]
 for i, b in enumerate(BEATS):
     st = b["start"]
     if i > 0 and P["beat"] > 0: place(sfx, soft_swish(0.4, P["beat"]), st - 0.2)
     for c in b.get("sound", []):
         at = st + c.get("at", 0.0); cue = c["cue"]
-        if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, soft_swish(0.2, P["reveal"] * 0.2), at - 0.1)
+        if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, soft_swish(0.2, P["reveal"] * 0.1), at - 0.1)
         elif cue == "hit":
             if PROFILE in ("trailer", "energetic"): place(sfx, boom(P["hit"]), at)
             else: place(sfx, thud(P["hit"]), at)
         elif cue == "riser_hit": place(sfx, riser(c.get("dur", 1.6), P["riser"]), at - c.get("dur", 1.6)); place(sfx, boom(P["hit"]), at)
-        elif cue == "whoosh": place(sfx, soft_swish(0.5, max(0.08, P["beat"] * 1.4)), at - 0.25)
+        elif cue == "whoosh": place(sfx, soft_swish(0.5, max(0.04, P["beat"] * 1.4)), at - 0.25)
         elif cue == "silence": silences.append((at, at + c.get("dur", 0.6)))
         elif cue == "outro": place(sfx, chord(0.3), at); place(sfx, pop(1320, 0.14), at + 0.8)
 if PROFILE == "trailer": place(sfx, boom(0.8), 0.05)
