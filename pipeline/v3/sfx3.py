@@ -59,25 +59,40 @@ def place(tr, s, at):
     if i >= len(tr): return
     m = min(len(s), len(tr) - i); tr[i:i + m] += s[:m]
 
+# ---- "computer" sound set (Jacob, 18 Nov 2026): typing clicks, digital blips, confirm beeps; no swooshes, no booms ----
+def bandnoise(n, lo, hi): x = rng.standard_normal(n); return lp(x, hi) - lp(x, lo)
+def key(gain=0.05):                      # one soft keyboard click
+    n = int(0.018 * SR); t = np.arange(n) / SR
+    c = bandnoise(n, 1800, 7000) * np.exp(-t * 380) + np.sin(2 * np.pi * 180 * t) * np.exp(-t * 300) * 0.4
+    return c / (np.abs(c).max() + 1e-9) * gain
+def typing(dur=0.5, gain=0.05):          # a short burst of typing
+    out = np.zeros(int(dur * SR) + SR // 10); x = 0.0
+    while x < dur: place(out, key(gain * rng.uniform(0.6, 1.0)), x); x += rng.uniform(0.045, 0.1)
+    return out
+def blip(f=1900, dur=0.035, gain=0.05):  # clean digital blip
+    t = np.arange(int(dur * SR)) / SR; return np.sin(2 * np.pi * f * t) * env(len(t), 0.002, dur * 0.6) * gain
+def blips(fs=(1600, 2400), gap=0.06, gain=0.05):
+    out = np.zeros(int((gap * len(fs) + 0.1) * SR))
+    for k, f in enumerate(fs): place(out, blip(f, 0.035, gain), k * gap)
+    return out
+def confirm(gain=0.08):                  # "data locked" two-tone beep
+    return blips((1320, 1980), 0.07, gain)
 sfx = np.zeros(N, np.float32); silences = []
-# Nov 18 2026: Jacob found the scene-change swoosh and risers ("vroop") too loud -> beat swoosh and risers cut way down; halved again after his review
-P = {"documentary": dict(beat=0.02, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
-     "trailer": dict(beat=0.035, reveal=0.26, hit=0.85, music=0.22, riser=0.04),
-     "energetic": dict(beat=0.025, reveal=0.22, hit=0.65, music=0.19, riser=0.03)}[PROFILE]
+P = {"documentary": dict(beat=0.025, reveal=0.04, hit=0.06, music=0.11),
+     "trailer": dict(beat=0.04, reveal=0.06, hit=0.09, music=0.22),
+     "energetic": dict(beat=0.03, reveal=0.05, hit=0.075, music=0.19)}[PROFILE]
 for i, b in enumerate(BEATS):
     st = b["start"]
-    if i > 0 and P["beat"] > 0: place(sfx, soft_swish(0.4, P["beat"]), st - 0.2)
+    if i > 0: place(sfx, blips((2200, 1700), 0.05, P["beat"]), st - 0.08)
     for c in b.get("sound", []):
         at = st + c.get("at", 0.0); cue = c["cue"]
-        if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, soft_swish(0.2, P["reveal"] * 0.1), at - 0.1)
-        elif cue == "hit":
-            if PROFILE in ("trailer", "energetic"): place(sfx, boom(P["hit"]), at)
-            else: place(sfx, thud(P["hit"]), at)
-        elif cue == "riser_hit": place(sfx, riser(c.get("dur", 1.6), P["riser"]), at - c.get("dur", 1.6)); place(sfx, boom(P["hit"]), at)
-        elif cue == "whoosh": place(sfx, soft_swish(0.5, max(0.04, P["beat"] * 1.4)), at - 0.25)
+        if cue == "reveal": place(sfx, typing(0.35, P["reveal"]), at - 0.05)
+        elif cue == "hit": place(sfx, confirm(P["hit"]), at)
+        elif cue == "riser_hit": d = min(c.get("dur", 0.8), 0.8); place(sfx, typing(d, P["reveal"]), at - d); place(sfx, confirm(P["hit"]), at)
+        elif cue == "whoosh": place(sfx, blips((1800, 2400, 3000), 0.04, P["beat"]), at)
         elif cue == "silence": silences.append((at, at + c.get("dur", 0.6)))
-        elif cue == "outro": place(sfx, chord(0.3), at); place(sfx, pop(1320, 0.14), at + 0.8)
-if PROFILE == "trailer": place(sfx, boom(0.8), 0.05)
+        elif cue == "outro": place(sfx, chord(0.12), at); place(sfx, blips((1320, 1760, 2640), 0.09, P["hit"]), at + 0.6)
+if PROFILE == "trailer": place(sfx, typing(0.3, P["reveal"]), 0.0); place(sfx, confirm(P["hit"]), 0.3)
 
 voice = load(VOICE); vt = np.zeros(N, np.float32); place(vt, voice, LEAD)
 mt = np.zeros(N, np.float32)
@@ -94,6 +109,10 @@ for a, b_ in silences:                       # brief silence: music and sfx drop
     g = np.ones(N, np.float32); g[i0:i1] = 0
     g[max(0, i0 - fadeN):i0] = np.linspace(1, 0, min(fadeN, i0)); g[i1:i1 + fadeN] = np.linspace(0, 1, len(g[i1:i1 + fadeN]))
     mt *= g; sfx *= g
+# effects never sit on top of the voice: duck all sfx hard while words are spoken (Jacob, 18 Nov 2026)
+w2 = int(0.03 * SR); vs = np.convolve(np.abs(vt), np.ones(w2) / w2, mode="same")
+vs = np.convolve(vs, np.ones(int(0.25 * SR)) / int(0.25 * SR), mode="same")
+sfx = sfx * (1.0 - 0.6 * np.clip(vs / (np.percentile(vs[vs > 0], 60) + 1e-9), 0, 1))
 mix = vt + mt + sfx
 mix = mix / max(1.0, np.abs(mix).max() / 0.95)
 tmp = tempfile.mktemp(suffix=".wav")
