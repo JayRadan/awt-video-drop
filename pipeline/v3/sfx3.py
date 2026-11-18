@@ -32,6 +32,9 @@ def env(n, a, r):
 def whoosh(dur=0.6, gain=0.4, down=False):
     n = int(dur * SR); x = lp(rng.standard_normal(n), np.linspace(400, 6500, n) if not down else np.linspace(6000, 300, n)) * env(n, 0.05, dur * 0.6)
     return x / (np.abs(x).max() + 1e-9) * gain
+def soft_swish(dur=0.4, gain=0.05):            # dark, short air swish (no bright sweep)
+    n = int(dur * SR); x = lp(rng.standard_normal(n), np.linspace(300, 1800, n)) * env(n, 0.12, dur * 0.7)
+    return x / (np.abs(x).max() + 1e-9) * gain
 def tick(f=2400, dur=0.03, gain=0.1): t = np.arange(int(dur * SR)) / SR; return np.sin(2 * np.pi * f * t) * np.exp(-t * 70) * gain
 def pop(f=880, gain=0.2):
     t = np.arange(int(0.16 * SR)) / SR; b = (np.sin(2 * np.pi * f * t) + 0.3 * np.sin(4 * np.pi * f * t)) * np.exp(-t * 22) * gain
@@ -57,23 +60,24 @@ def place(tr, s, at):
     m = min(len(s), len(tr) - i); tr[i:i + m] += s[:m]
 
 sfx = np.zeros(N, np.float32); silences = []
-P = {"documentary": dict(beat=0.14, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
-     "trailer": dict(beat=0.38, reveal=0.30, hit=0.95, music=0.22, riser=0.36),
-     "energetic": dict(beat=0.28, reveal=0.26, hit=0.70, music=0.19, riser=0.24)}[PROFILE]
+# Nov 18 2026: Jacob found the scene-change swoosh and risers ("vroop") too loud -> beat swoosh and risers cut way down
+P = {"documentary": dict(beat=0.04, reveal=0.16, hit=0.42, music=0.11, riser=0.0),
+     "trailer": dict(beat=0.07, reveal=0.26, hit=0.85, music=0.22, riser=0.08),
+     "energetic": dict(beat=0.05, reveal=0.22, hit=0.65, music=0.19, riser=0.06)}[PROFILE]
 for i, b in enumerate(BEATS):
     st = b["start"]
-    if i > 0: place(sfx, whoosh(0.5, P["beat"]), st - 0.25)
+    if i > 0 and P["beat"] > 0: place(sfx, soft_swish(0.4, P["beat"]), st - 0.2)
     for c in b.get("sound", []):
         at = st + c.get("at", 0.0); cue = c["cue"]
-        if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, whoosh(0.25, P["reveal"] * 0.7), at - 0.12)
+        if cue == "reveal": place(sfx, pop(880 + 60 * (i % 3), P["reveal"]), at); place(sfx, soft_swish(0.2, P["reveal"] * 0.2), at - 0.1)
         elif cue == "hit":
-            if PROFILE in ("trailer", "energetic"): place(sfx, riser(1.0, P["riser"]), at - 1.0); place(sfx, boom(P["hit"]), at)
+            if PROFILE in ("trailer", "energetic"): place(sfx, boom(P["hit"]), at)
             else: place(sfx, thud(P["hit"]), at)
-        elif cue == "riser_hit": place(sfx, riser(c.get("dur", 1.6), max(0.3, P["riser"])), at - c.get("dur", 1.6)); place(sfx, boom(P["hit"]), at)
-        elif cue == "whoosh": place(sfx, whoosh(0.6, P["beat"] * 1.4), at - 0.3)
+        elif cue == "riser_hit": place(sfx, riser(c.get("dur", 1.6), P["riser"]), at - c.get("dur", 1.6)); place(sfx, boom(P["hit"]), at)
+        elif cue == "whoosh": place(sfx, soft_swish(0.5, max(0.08, P["beat"] * 1.4)), at - 0.25)
         elif cue == "silence": silences.append((at, at + c.get("dur", 0.6)))
         elif cue == "outro": place(sfx, chord(0.3), at); place(sfx, pop(1320, 0.14), at + 0.8)
-if PROFILE == "trailer": place(sfx, riser(1.2, 0.4), 0.0); place(sfx, boom(0.9), 1.2)
+if PROFILE == "trailer": place(sfx, boom(0.8), 0.05)
 
 voice = load(VOICE); vt = np.zeros(N, np.float32); place(vt, voice, LEAD)
 mt = np.zeros(N, np.float32)
