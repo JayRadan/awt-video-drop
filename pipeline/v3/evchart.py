@@ -65,11 +65,18 @@ def draw(img, box, spec, lt, data, F, S=1.0):
     rv = spec.get("reveal")
     vis_end = data.asof
     if rv:
-        r0, r1 = ts(rv.get("from", data.c[0]["t"])), ts(rv.get("until", data.c[-1]["t"]))
-        vis_end = lerp(r0, r1, ease_io((lt - rv.get("at", 0)) / rv.get("dur", 2.0)))
+        if rv.get("keys"):   # piecewise reveal: [{'at':0,'until':..}, {'at':t,'until':..,'dur':1.2}, ...]
+            ks = sorted(rv["keys"], key=lambda k: k.get("at", 0)); vis_end = ts(ks[0]["until"]); rmax = max(ts(k["until"]) for k in ks)
+            for k in ks[1:]:
+                if lt <= k.get("at", 0): break
+                vis_end = lerp(vis_end, ts(k["until"]), ease_io((lt - k.get("at", 0)) / k.get("dur", 1.2)))
+        else:
+            r0, r1 = ts(rv.get("from", data.c[0]["t"])), ts(rv.get("until", data.c[-1]["t"])); rmax = r1
+            vis_end = lerp(r0, r1, ease_io((lt - rv.get("at", 0)) / rv.get("dur", 2.0)))
     cs = [c for c in data.c if va <= c["ts"] <= vb and c["ts"] <= vis_end + 1]
     items = [it for it in spec.get("items", []) if lt >= it.get("at", 0)]
-    lo = min([c["l"] for c in cs] or [data.c[-1]["l"]]); hi = max([c["h"] for c in cs] or [data.c[-1]["h"]])
+    call = [c for c in data.c if va <= c["ts"] <= vb and c["ts"] <= (min(rmax, data.asof) if rv else data.asof) + 1] or cs
+    lo = min([c["l"] for c in call] or [data.c[-1]["l"]]); hi = max([c["h"] for c in call] or [data.c[-1]["h"]])
     for it in spec.get("items", []):           # keep the y-range stable: include all planned overlays from the start
         for p in _prices(it, data): lo, hi = min(lo, p), max(hi, p)
     if spec.get("yrange"): lo, hi = spec["yrange"]

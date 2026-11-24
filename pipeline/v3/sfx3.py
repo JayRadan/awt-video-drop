@@ -117,11 +117,12 @@ mix = vt + mt + sfx
 mix = mix / max(1.0, np.abs(mix).max() / 0.95)
 tmp = tempfile.mktemp(suffix=".wav")
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-", tmp], input=mix.astype(np.float32).tobytes(), check=True)
-# two-pass loudnorm to -14 LUFS / -1.5 dBTP
-r = subprocess.run(["ffmpeg", "-hide_banner", "-i", tmp, "-af", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
-js = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
-af = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:measured_LRA={js['input_lra']}"
-      f":measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true")
-subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", tmp, "-af", af, "-ar", str(SR), "-ac", "2", OUT], check=True)
+# static gain to -14 LUFS + peak limiter (no dynamic loudnorm on the full mix: it can pull the voice down on a hit)
+import re as _re
+def _lufs(p): return float(_re.findall(r"I:\s+(-?[\d.]+) LUFS", subprocess.run(["ffmpeg", "-hide_banner", "-i", p, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr)[-1])
+I0 = _lufs(tmp); js = {"input_i": I0}; g = -14.0 - I0
+for _ in range(2):
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", tmp, "-af", f"volume={g:.2f}dB,alimiter=limit=0.84:attack=2:release=40:level=false", "-ar", str(SR), "-ac", "2", OUT], check=True)
+    g += -14.0 - _lufs(OUT)
 os.remove(tmp)
 print("wrote", OUT, f"{TOTAL:.1f}s", PROFILE, "input LUFS", js["input_i"])
