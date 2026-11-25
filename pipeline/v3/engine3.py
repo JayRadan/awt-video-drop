@@ -309,6 +309,28 @@ def T_triggers(img, d, b, lt, dur):
             d.text((x0 + 26, y1 - inv_h + 16), "INVALIDATION", font=F["tag"], fill=fade(RED, u))
             d.text((x0 + 26, y1 - inv_h + 50), v["invalidation"], font=F["h3"], fill=fade(WHITE, u))
 
+def T_bars(img, d, b, lt, dur):
+    """Horizontal bar graphic for real figures: items [{label, value, text, col, sub, at}]"""
+    v = b["visual"]; x0, y0, x1, y1 = CONTENT
+    if v.get("title"): d.text((x0, y0), v["title"], font=F["h2"], fill=fade(WHITE, ease(lt / 0.4))); y0 += 96
+    items = v["items"]; n = len(items); rh = min(170 if not VERT else 250, (y1 - y0) / n)
+    mx = v.get("max") or max(abs(it["value"]) for it in items) or 1
+    lw = 0 if VERT else int(max(max(tw(d, it["label"], F["item"]), tw(d, it.get("sub", ""), F["sm"])) for it in items) + 40)
+    for i, it in enumerate(items):
+        u = ease((lt - it.get("at", 0.4 + i * 0.7)) / 0.7)
+        if u <= 0: continue
+        yy_ = y0 + i * rh; c = C(it.get("col", "red"))
+        if VERT:
+            d.text((x0, yy_), it["label"], font=F["h3"], fill=fade(WHITE, u)); by = yy_ + 58; bh = int(rh * 0.36); xb = x0
+        else:
+            d.text((x0, yy_ + rh * 0.5 - 62), it["label"], font=F["item"], fill=fade(WHITE, u)); bh = int(rh * 0.5); by = yy_ + rh * 0.5 - bh / 2 - 34; xb = x0 + lw
+            if it.get("sub"): d.text((x0, yy_ + rh * 0.5 - 4), it["sub"], font=F["sm"], fill=fade(MUTED, u))
+        txt = it.get("text", str(it["value"])); room = x1 - xb - tw(d, txt, F["item"]) - 40
+        L = max(6, room * abs(it["value"]) / mx * u)
+        d.rounded_rectangle([xb, by, xb + L, by + bh], radius=8, fill=mix(BG, c, 0.85 * u))
+        d.text((xb + L + 18, by + bh / 2 - 30), txt, font=F["item"], fill=fade(c, u))
+        if VERT and it.get("sub"): d.text((x0, by + bh + 8), it["sub"], font=F["sm"], fill=fade(MUTED, u))
+
 def T_title(img, d, b, lt, dur):
     v = b["visual"]; x0, y0, x1, y1 = CONTENT
     lines = v["lines"]; f = F["h1"] if not VERT else F["h1"]
@@ -332,7 +354,7 @@ def T_outro(img, d, b, lt, dur):
         d.text(((W - tw(d, l, F["sm"])) / 2, H * 0.36 + 270 + j * 40), l, font=F["sm"], fill=fade(MUTED, ease((lt - 1.4) / 0.5)))
 
 TPL = {"chart": T_chart, "headline": T_headline, "stat": T_stat, "compare": T_compare, "list": T_list, "mechanism": T_mechanism,
-       "scenarios": T_scenarios, "triggers": T_triggers, "title": T_title, "outro": T_outro}
+       "scenarios": T_scenarios, "triggers": T_triggers, "title": T_title, "outro": T_outro, "bars": T_bars}
 
 def beat_at(t):
     for b in BEATS:
