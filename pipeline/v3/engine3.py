@@ -331,6 +331,40 @@ def T_bars(img, d, b, lt, dur):
         d.text((xb + L + 18, by + bh / 2 - 30), txt, font=F["item"], fill=fade(c, u))
         if VERT and it.get("sub"): d.text((x0, by + bh + 8), it["sub"], font=F["sm"], fill=fade(MUTED, u))
 
+_IMG = {}
+def _img(path, w, h):
+    k = (path, int(w), int(h))
+    if k not in _IMG:
+        im = Image.open(path).convert("RGB"); r = min(w / im.width, h / im.height)
+        _IMG[k] = im.resize((max(1, int(im.width * r)), max(1, int(im.height * r))), Image.LANCZOS)
+    return _IMG[k]
+def T_image(img, d, b, lt, dur):
+    """A real picture (e.g. his broker screenshot) with call-outs: {src, src2?, caption?, items:[{t, sub, col, at}]}"""
+    v = b["visual"]; x0, y0, x1, y1 = CONTENT
+    if v.get("title"): d.text((x0, y0), v["title"], font=F["h2"], fill=fade(WHITE, ease(lt / 0.4))); y0 += 90
+    u0 = ease(lt / 0.5)
+    if VERT:
+        ih = (y1 - y0) * 0.74; pic = _img(v["src"], x1 - x0, ih); px = x0 + (x1 - x0 - pic.width) // 2; py = int(y0)
+        tx, ty, tw_ = x0, py + pic.height + 30, x1 - x0
+    else:
+        pic = _img(v["src"], (x1 - x0) * 0.42, y1 - y0); px, py = x0, int(y0); tx, ty, tw_ = x0 + pic.width + 50, int(y0), x1 - x0 - pic.width - 50
+    if u0 > 0:
+        img.paste(Image.blend(Image.new("RGB", pic.size, BG), pic, min(1.0, u0)), (int(px), int(py)))
+        d.rectangle([px - 2, py - 2, px + pic.width + 1, py + pic.height + 1], outline=fade(LINE, u0), width=2)
+    if v.get("src2") and not VERT:
+        p2 = _img(v["src2"], tw_, 150); u2 = ease((lt - v.get("at2", 0.6)) / 0.5)
+        if u2 > 0:
+            img.paste(Image.blend(Image.new("RGB", p2.size, BG), p2, min(1.0, u2)), (int(tx), int(ty)))
+            d.rectangle([tx - 2, ty - 2, tx + p2.width + 1, ty + p2.height + 1], outline=fade(GOLD, u2), width=2)
+        ty += p2.height + 34
+    for i, it in enumerate(v.get("items", [])):
+        u = ease((lt - it.get("at", 0.6 + i * 0.8)) / 0.5)
+        if u <= 0: continue
+        c = C(it.get("col", "white")); f1 = F["h2"] if not VERT else F["h3"]
+        d.text((tx, ty), it["t"], font=f1, fill=fade(c, u)); ty += f1.size + 8
+        if it.get("sub"): d.text((tx, ty), it["sub"], font=F["sm"], fill=fade(MUTED, u)); ty += 40
+        ty += 18
+
 def T_title(img, d, b, lt, dur):
     v = b["visual"]; x0, y0, x1, y1 = CONTENT
     lines = v["lines"]; f = F["h1"] if not VERT else F["h1"]
@@ -354,7 +388,7 @@ def T_outro(img, d, b, lt, dur):
         d.text(((W - tw(d, l, F["sm"])) / 2, H * 0.36 + 270 + j * 40), l, font=F["sm"], fill=fade(MUTED, ease((lt - 1.4) / 0.5)))
 
 TPL = {"chart": T_chart, "headline": T_headline, "stat": T_stat, "compare": T_compare, "list": T_list, "mechanism": T_mechanism,
-       "scenarios": T_scenarios, "triggers": T_triggers, "title": T_title, "outro": T_outro, "bars": T_bars}
+       "scenarios": T_scenarios, "triggers": T_triggers, "title": T_title, "outro": T_outro, "bars": T_bars, "image": T_image}
 
 def beat_at(t):
     for b in BEATS:
